@@ -44,6 +44,10 @@ export const {
       gray700: '#3f3f46',
       gray800: '#27272a',
       gray900: '#18181b',
+      red200: '#fecaca',
+      red500: '#ef4444',
+      green200: '#bbf7d0',
+      green500: '#22c55e',
     },
   },
   media: {
