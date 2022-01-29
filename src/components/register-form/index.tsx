@@ -1,15 +1,10 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Link from 'next/link';
+import TextInput from '../text-input';
+import Button from '../button';
 
-import {
-  Container,
-  Field,
-  Form,
-  ErrorMessage,
-  Button,
-  Title,
-  Input,
-} from './styles';
+import { Container, Form, Footer } from './styles';
 
 type FormData = {
   firstName: string;
@@ -45,6 +40,7 @@ export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
   const {
     errors,
     handleBlur,
+    isSubmitting,
     handleChange,
     touched,
     values,
@@ -60,81 +56,81 @@ export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
   return (
     <Container>
       <Form onSubmit={formikSubmitHandler} aria-label='form'>
-        <Field isInvalid={!!(touched.firstName && errors.firstName)} required>
-          <Title>First name</Title>
-          <Input
-            id='firstName'
-            type='text'
-            name='firstName'
-            autoComplete='given-name'
-            value={values.firstName}
-            aria-label='first name'
-            aria-required='true'
-            aria-invalid={!!errors.firstName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {touched.firstName && errors.firstName && (
-            <ErrorMessage role='alert'>{errors.firstName}</ErrorMessage>
-          )}
-        </Field>
-        <Field isInvalid={!!(touched.lastName && errors.lastName)} required>
-          <Title>Last name</Title>
-          <Input
-            id='lastName'
-            type='text'
-            name='lastName'
-            value={values.lastName}
-            autoComplete='family-name'
-            aria-required='true'
-            aria-label='last name'
-            aria-invalid={!!errors.lastName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {touched.lastName && errors.lastName && (
-            <ErrorMessage role='alert'>{errors.lastName}</ErrorMessage>
-          )}
-        </Field>
-        <Field isInvalid={!!(touched.email && errors.email)} required>
-          <Title>Email</Title>
-          <Input
-            id='email'
-            type='text'
-            name='email'
-            value={values.email}
-            autoComplete='email'
-            aria-label='email'
-            aria-required='true'
-            aria-invalid={!!errors.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {touched.email && errors.email && (
-            <ErrorMessage role='alert'>{errors.email}</ErrorMessage>
-          )}
-        </Field>
-        <Field isInvalid={!!(touched.password && errors.password)} required>
-          <Title>Password</Title>
-          <Input
-            id='password'
-            type='password'
-            name='password'
-            value={values.password}
-            autoComplete='new-password'
-            aria-label='password'
-            aria-required='true'
-            aria-invalid={!!errors.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {touched.password && errors.password && (
-            <ErrorMessage role='alert'>{errors.password}</ErrorMessage>
-          )}
-        </Field>
-        <Button disabled={!(isValid && dirty)} type='submit'>
+        <TextInput
+          id='firstName'
+          type='text'
+          name='firstName'
+          label='First name'
+          aria-label='first name'
+          aria-required='true'
+          aria-invalid={!!errors.firstName}
+          value={values.firstName}
+          autoComplete='given-name'
+          onChange={handleChange}
+          onBlur={handleBlur}
+          errorMessage={errors.firstName}
+          shouldShowErrorMessage={!!(touched.firstName && errors.firstName)}
+          required
+        />
+
+        <TextInput
+          id='lastName'
+          type='text'
+          name='lastName'
+          label='Last name'
+          value={values.lastName}
+          autoComplete='family-name'
+          aria-required='true'
+          aria-label='last name'
+          aria-invalid={!!errors.lastName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          shouldShowErrorMessage={!!(touched.lastName && errors.lastName)}
+          errorMessage={errors.lastName}
+          required
+        />
+
+        <TextInput
+          label='Email'
+          errorMessage={errors.email}
+          id='email'
+          type='text'
+          name='email'
+          value={values.email}
+          autoComplete='email'
+          aria-label='email'
+          aria-required='true'
+          aria-invalid={!!errors.email}
+          onChange={handleChange}
+          shouldShowErrorMessage={!!(touched.email && errors.email)}
+          onBlur={handleBlur}
+          required
+        />
+
+        <TextInput
+          label='Password'
+          errorMessage={errors.password}
+          id='password'
+          type='password'
+          name='password'
+          value={values.password}
+          autoComplete='new-password'
+          aria-label='password'
+          aria-required='true'
+          aria-invalid={!!errors.password}
+          shouldShowErrorMessage={!!(touched.password && errors.password)}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          required
+        />
+
+        <Button disabled={!(isValid && dirty) || isSubmitting} type='submit'>
           Submit
         </Button>
+        <Footer>
+          <span>Already have an account ?</span>
+          <Link href='/login'>login</Link>
+        </Footer>
       </Form>
     </Container>
   );
