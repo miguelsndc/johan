@@ -69,7 +69,7 @@ export default function LoginForm({ handleSubmit }: LoginFormProps) {
           type='password'
           name='password'
           value={values.password}
-          autoComplete='new-password'
+          autoComplete='current-password'
           aria-label='password'
           aria-required='true'
           aria-invalid={!!errors.password}
