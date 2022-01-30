@@ -2,21 +2,21 @@ import {
   ChangeEventHandler,
   HTMLInputTypeAttribute,
   InputHTMLAttributes,
-} from 'react';
+} from 'react'
 
-import { ErrorMessage, Field, Input, Title } from './styles';
+import { ErrorMessage, Field, Input, Title } from './styles'
 
 type TextInputProps = {
-  label: string;
-  errorMessage?: string;
-  shouldShowErrorMessage: boolean;
-  required?: boolean;
-  id: string;
-  type: HTMLInputTypeAttribute;
-  name: string;
-  value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-} & InputHTMLAttributes<HTMLInputElement>;
+  label: string
+  errorMessage?: string
+  shouldShowErrorMessage: boolean
+  required?: boolean
+  id: string
+  type: HTMLInputTypeAttribute
+  name: string
+  value: string
+  onChange: ChangeEventHandler<HTMLInputElement>
+} & InputHTMLAttributes<HTMLInputElement>
 
 export default function TextInput({
   errorMessage,
@@ -48,5 +48,5 @@ export default function TextInput({
         <ErrorMessage role='alert'>{errorMessage}</ErrorMessage>
       )}
     </Field>
-  );
+  )
 }

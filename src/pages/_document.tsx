@@ -1,5 +1,5 @@
-import NextDocument, { Head, Html, Main, NextScript } from 'next/document';
-import { getCssText } from '../../stitches.config';
+import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
+import { getCssText } from '../../stitches.config'
 
 class MyDocument extends NextDocument {
   render() {
@@ -15,9 +15,10 @@ class MyDocument extends NextDocument {
           <link
             href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap'
             rel='stylesheet'
-          ></link>
+          />
           <style
             id='stitches'
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: getCssText() }}
           />
         </Head>
@@ -26,8 +27,8 @@ class MyDocument extends NextDocument {
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }
 
-export default MyDocument;
+export default MyDocument

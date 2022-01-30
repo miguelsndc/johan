@@ -1,18 +1,18 @@
-import { useFormik } from 'formik';
-import Link from 'next/link';
-import * as yup from 'yup';
-import TextInput from '../text-input';
-import Button from '../button';
-import { Container, Footer, Form } from './styles';
+import { useFormik } from 'formik'
+import Link from 'next/link'
+import * as yup from 'yup'
+import TextInput from '../text-input'
+import Button from '../button'
+import { Container, Footer, Form } from './styles'
 
 type FormData = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 type LoginFormProps = {
-  handleSubmit: (values: FormData) => Promise<void>;
-};
+  handleSubmit: (values: FormData) => Promise<void>
+}
 
 const formSchema: yup.SchemaOf<FormData> = yup.object().shape({
   email: yup
@@ -23,7 +23,7 @@ const formSchema: yup.SchemaOf<FormData> = yup.object().shape({
     .string()
     .min(8, 'The password field should be at least 8 characters long.')
     .required('The password field is required.'),
-});
+})
 
 export default function LoginForm({ handleSubmit }: LoginFormProps) {
   const {
@@ -38,9 +38,9 @@ export default function LoginForm({ handleSubmit }: LoginFormProps) {
     handleSubmit: formikSubmitHandler,
   } = useFormik<FormData>({
     initialValues: { email: '', password: '' },
-    onSubmit: values => handleSubmit(values),
+    onSubmit: (formValues) => handleSubmit(formValues),
     validationSchema: formSchema,
-  });
+  })
 
   return (
     <Container>
@@ -83,10 +83,10 @@ export default function LoginForm({ handleSubmit }: LoginFormProps) {
           login
         </Button>
         <Footer>
-          <span>Don't have an account yet ?</span>
+          <span>Don&apos;t have an account yet ?</span>
           <Link href='/register'>register</Link>
         </Footer>
       </Form>
     </Container>
-  );
+  )
 }

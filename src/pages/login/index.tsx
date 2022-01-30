@@ -1,11 +1,12 @@
-import LoginForm from '../../components/login-form';
+import { LoginForm } from '../../components'
+import { useAuth } from '../../contexts/auth'
 
 export default function LoginPage() {
-  async function handleLogin() {}
+  const { signInWithEmailAndPassword } = useAuth()
 
   return (
     <div>
-      <LoginForm handleSubmit={handleLogin} />
+      <LoginForm handleSubmit={signInWithEmailAndPassword} />
     </div>
-  );
+  )
 }

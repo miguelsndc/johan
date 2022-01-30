@@ -1,21 +1,21 @@
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import Link from 'next/link';
-import TextInput from '../text-input';
-import Button from '../button';
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import Link from 'next/link'
+import TextInput from '../text-input'
+import Button from '../button'
 
-import { Container, Form, Footer } from './styles';
+import { Container, Form, Footer } from './styles'
 
 type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-};
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+}
 
 type RegisterFormProps = {
-  handleSubmit: (values: FormData) => Promise<void>;
-};
+  handleSubmit: (values: FormData) => Promise<void>
+}
 
 const formSchema: yup.SchemaOf<FormData> = yup.object().shape({
   email: yup
@@ -34,7 +34,7 @@ const formSchema: yup.SchemaOf<FormData> = yup.object().shape({
     .string()
     .min(8, 'The password field should be at least 8 characters long.')
     .required('The password field is required.'),
-});
+})
 
 export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
   const {
@@ -48,10 +48,15 @@ export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
     dirty,
     handleSubmit: formikSubmitHandler,
   } = useFormik<FormData>({
-    initialValues: { email: '', firstName: '', lastName: '', password: '' },
-    onSubmit: values => handleSubmit(values),
+    initialValues: {
+      email: '',
+      firstName: '',
+      lastName: '',
+      password: '',
+    },
+    onSubmit: (formValues) => handleSubmit(formValues),
     validationSchema: formSchema,
-  });
+  })
 
   return (
     <Container>
@@ -133,5 +138,5 @@ export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
         </Footer>
       </Form>
     </Container>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { styled } from '../../../stitches.config';
+import { styled } from '../../../stitches.config'
 
 export const Input = styled('input', {
   width: '100%',
@@ -12,13 +12,13 @@ export const Input = styled('input', {
   '&:focus': {
     outlineColor: '$purple400',
   },
-});
+})
 
 export const Title = styled('span', {
   display: 'block',
   marginBottom: '0.3rem',
   fontWeight: '$medium',
-});
+})
 
 export const Field = styled('label', {
   display: 'block',
@@ -44,11 +44,11 @@ export const Field = styled('label', {
       },
     },
   },
-});
+})
 
 export const ErrorMessage = styled('span', {
   display: 'block',
   fontSize: '0.875rem',
   marginTop: '0.35rem',
   color: '$red500',
-});
+})

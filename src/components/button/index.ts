@@ -1,4 +1,4 @@
-import { styled } from '../../../stitches.config';
+import { styled } from '../../../stitches.config'
 
 const Button = styled('button', {
   width: '100%',
@@ -23,6 +23,6 @@ const Button = styled('button', {
     pointerEvents: 'none',
     opacity: '0.5',
   },
-});
+})
 
-export default Button;
+export default Button

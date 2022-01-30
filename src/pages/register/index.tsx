@@ -1,13 +1,14 @@
-import { RegisterForm } from '../../components';
+import { RegisterForm } from '../../components'
+import { useAuth } from '../../contexts/auth'
 
 function RegisterPage() {
-  async function handleRegister() {}
+  const { registerWithEmailAndPassword } = useAuth()
 
   return (
     <div>
-      <RegisterForm handleSubmit={handleRegister} />
+      <RegisterForm handleSubmit={registerWithEmailAndPassword} />
     </div>
-  );
+  )
 }
 
-export default RegisterPage;
+export default RegisterPage

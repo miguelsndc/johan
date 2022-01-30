@@ -1,4 +1,4 @@
-import { styled } from '../../../stitches.config';
+import { styled } from '../../../stitches.config'
 
 export const Container = styled('div', {
   background: '$gray100',
@@ -6,7 +6,7 @@ export const Container = styled('div', {
   padding: '0 1rem',
   display: 'grid',
   placeItems: 'center',
-});
+})
 
 export const Form = styled('form', {
   width: '100%',
@@ -15,7 +15,7 @@ export const Form = styled('form', {
   padding: '1.5rem',
   borderRadius: 6,
   boxShadow: '0px 3px 12px #e4e4e7',
-});
+})
 
 export const Footer = styled('footer', {
   display: 'flex',
@@ -37,4 +37,4 @@ export const Footer = styled('footer', {
       textDecoration: 'underline',
     },
   },
-});
+})

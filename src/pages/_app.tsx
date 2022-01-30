@@ -1,12 +1,17 @@
-import type { AppProps } from 'next/app';
-import { globalStyles } from '../styles/globals';
+import type { AppProps } from 'next/app'
+import { globalStyles } from '../styles/globals'
+import { AuthProvider } from '../contexts/auth'
 
-import '../config/firebase';
+import '../config/firebase'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  globalStyles();
+  globalStyles()
 
-  return <Component {...pageProps} />;
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
+  )
 }
 
-export default MyApp;
+export default MyApp
