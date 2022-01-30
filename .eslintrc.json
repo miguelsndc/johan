@@ -4,7 +4,12 @@
     "es2021": true,
     "jest/globals": true
   },
-  "extends": ["plugin:react/recommended", "airbnb"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:testing-library/react"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -13,13 +18,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "next/core-web-vitals",
-    "react",
-    "@typescript-eslint",
-    "testing-library/react",
-    "jest"
-  ],
+  "plugins": ["react", "@typescript-eslint", "jest"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",
