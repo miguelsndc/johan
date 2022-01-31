@@ -4,6 +4,7 @@ import * as yup from 'yup'
 import TextInput from '../text-input'
 import Button from '../button'
 import { Container, Footer, Form } from './styles'
+import Spinner from '../spinner'
 
 type FormData = {
   email: string
@@ -80,7 +81,7 @@ export default function LoginForm({ handleSubmit }: LoginFormProps) {
         />
 
         <Button disabled={!(isValid && dirty) || isSubmitting} type='submit'>
-          login
+          {isSubmitting ? <Spinner size={15} color='#fff' /> : 'login'}
         </Button>
         <Footer>
           <span>Don&apos;t have an account yet ?</span>

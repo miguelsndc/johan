@@ -5,6 +5,7 @@ import TextInput from '../text-input'
 import Button from '../button'
 
 import { Container, Form, Footer } from './styles'
+import Spinner from '../spinner'
 
 type FormData = {
   firstName: string
@@ -130,7 +131,7 @@ export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
         />
 
         <Button disabled={!(isValid && dirty) || isSubmitting} type='submit'>
-          Submit
+          {isSubmitting ? <Spinner size={15} color='#fff' /> : 'Submit'}
         </Button>
         <Footer>
           <span>Already have an account ?</span>
