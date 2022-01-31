@@ -7,8 +7,11 @@ import {
   useMemo,
 } from 'react'
 
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { setDoc, doc } from 'firebase/firestore'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
+} from 'firebase/auth'
+import { setDoc, doc, getDoc } from 'firebase/firestore'
 import { auth, firestore } from '../config/firebase'
 
 type AuthProviderProps = {
@@ -88,8 +91,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const signInWithEmailAndPassword = useCallback(
     async ({ email, password }: SignInWithEmailAndPasswordParams) => {
-      // eslint-disable-next-line no-console
-      console.log(email, password)
+      const credentials = await firebaseSignInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+
+      const userDoc = doc(firestore, `users/${credentials.user.uid}`)
+
+      const docSnapshot = await getDoc(userDoc)
+
+      const userData = docSnapshot.data() as User
+
+      setUser(userData)
     },
     []
   )
