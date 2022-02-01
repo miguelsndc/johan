@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import { Toaster } from 'react-hot-toast'
 import { globalStyles } from '../styles/globals'
 import { AuthProvider } from '../contexts/auth'
 
@@ -8,9 +9,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   globalStyles()
 
   return (
-    <AuthProvider>
-      <Component {...pageProps} />
-    </AuthProvider>
+    <>
+      <Toaster />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
+    </>
   )
 }
 

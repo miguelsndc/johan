@@ -10,8 +10,19 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
+  UserCredential,
 } from 'firebase/auth'
-import { setDoc, doc, getDoc } from 'firebase/firestore'
+import {
+  setDoc,
+  doc,
+  getDoc,
+  query,
+  where,
+  collection,
+  getDocs,
+} from 'firebase/firestore'
+import { FirebaseError } from 'firebase/app'
+import toast from 'react-hot-toast'
 import { auth, firestore } from '../config/firebase'
 
 type AuthProviderProps = {
@@ -65,11 +76,53 @@ export function AuthProvider({ children }: AuthProviderProps) {
       lastName,
       password,
     }: RegisterWithEmailAndPasswordParams) => {
-      const credentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
+      const getUserByFirstNameQuery = query(
+        collection(firestore, 'users'),
+        where('firstName', '==', firstName)
       )
+      const querySnapshot = (await getDocs(getUserByFirstNameQuery)).docs[0]
+
+      const firstMatched = querySnapshot.data() as User
+
+      if (firstMatched) {
+        toast.error(
+          'The specified first name is already being used by another account.'
+        )
+        return
+      }
+
+      let credentials = {} as UserCredential
+
+      try {
+        credentials = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        )
+      } catch (e) {
+        const error = e as FirebaseError
+
+        switch (error.code) {
+          case 'auth/auth/email-already-in-use':
+            toast.error(
+              'The specified email is already being used by another account.'
+            )
+            return
+          case 'auth/email-already-exists':
+            toast.error(
+              'The specified email is already being used by another account.'
+            )
+            return
+          case 'auth/invalid-email':
+            toast.error('The specified email is invalid.')
+            return
+          default:
+            toast.error(
+              'An error happened while trying to register your account, try again later.'
+            )
+            return
+        }
+      }
 
       const newUser: User = {
         email: credentials.user.email,
@@ -91,11 +144,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const signInWithEmailAndPassword = useCallback(
     async ({ email, password }: SignInWithEmailAndPasswordParams) => {
-      const credentials = await firebaseSignInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      )
+      let credentials = {} as UserCredential
+
+      try {
+        credentials = await firebaseSignInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        )
+      } catch (e) {
+        const error = e as FirebaseError
+
+        switch (error.code) {
+          case 'auth/wrong-password':
+            toast.error('Password or email incorrect.')
+            return
+          case 'auth/user-not-found':
+            toast.error('A user with the specified email does not exist.')
+            return
+          default:
+            toast.error(
+              'An error happened while trying to log you in, try again later.'
+            )
+            return
+        }
+      }
 
       const userDoc = doc(firestore, `users/${credentials.user.uid}`)
 
