@@ -1,13 +1,5 @@
 import { styled } from '../../../stitches.config'
 
-export const Container = styled('div', {
-  background: '$gray100',
-  height: '100vh',
-  padding: '0 1rem',
-  display: 'grid',
-  placeItems: 'center',
-})
-
 export const Form = styled('form', {
   width: '100%',
   maxWidth: 520,

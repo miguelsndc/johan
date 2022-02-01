@@ -3,7 +3,7 @@ import Link from 'next/link'
 import * as yup from 'yup'
 import TextInput from '../text-input'
 import Button from '../button'
-import { Container, Footer, Form } from './styles'
+import { Footer, Form } from './styles'
 import Spinner from '../spinner'
 
 type FormData = {
@@ -44,50 +44,48 @@ export default function LoginForm({ handleSubmit }: LoginFormProps) {
   })
 
   return (
-    <Container>
-      <Form onSubmit={formikSubmitHandler} aria-label='form'>
-        <TextInput
-          label='Email'
-          errorMessage={errors.email}
-          id='email'
-          type='text'
-          name='email'
-          value={values.email}
-          autoComplete='email'
-          aria-label='email'
-          aria-required='true'
-          aria-invalid={!!errors.email}
-          onChange={handleChange}
-          shouldShowErrorMessage={!!(touched.email && errors.email)}
-          onBlur={handleBlur}
-          required
-        />
+    <Form onSubmit={formikSubmitHandler} aria-label='form'>
+      <TextInput
+        label='Email'
+        errorMessage={errors.email}
+        id='email'
+        type='text'
+        name='email'
+        value={values.email}
+        autoComplete='email'
+        aria-label='email'
+        aria-required='true'
+        aria-invalid={!!errors.email}
+        onChange={handleChange}
+        shouldShowErrorMessage={!!(touched.email && errors.email)}
+        onBlur={handleBlur}
+        required
+      />
 
-        <TextInput
-          label='Password'
-          errorMessage={errors.password}
-          id='password'
-          type='password'
-          name='password'
-          value={values.password}
-          autoComplete='current-password'
-          aria-label='password'
-          aria-required='true'
-          aria-invalid={!!errors.password}
-          shouldShowErrorMessage={!!(touched.password && errors.password)}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          required
-        />
+      <TextInput
+        label='Password'
+        errorMessage={errors.password}
+        id='password'
+        type='password'
+        name='password'
+        value={values.password}
+        autoComplete='current-password'
+        aria-label='password'
+        aria-required='true'
+        aria-invalid={!!errors.password}
+        shouldShowErrorMessage={!!(touched.password && errors.password)}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        required
+      />
 
-        <Button disabled={!(isValid && dirty) || isSubmitting} type='submit'>
-          {isSubmitting ? <Spinner size={15} color='#fff' /> : 'login'}
-        </Button>
-        <Footer>
-          <span>Don&apos;t have an account yet ?</span>
-          <Link href='/register'>register</Link>
-        </Footer>
-      </Form>
-    </Container>
+      <Button disabled={!(isValid && dirty) || isSubmitting} type='submit'>
+        {isSubmitting ? <Spinner size={15} color='#fff' /> : 'login'}
+      </Button>
+      <Footer>
+        <span>Don&apos;t have an account yet ?</span>
+        <Link href='/register'>register</Link>
+      </Footer>
+    </Form>
   )
 }
