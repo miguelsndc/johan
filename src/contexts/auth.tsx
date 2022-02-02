@@ -11,6 +11,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   UserCredential,
+  signOut as firebaseSignOut,
 } from 'firebase/auth'
 import {
   setDoc,
@@ -62,6 +63,7 @@ type AuthContextValue = {
     email,
     password,
   }: SignInWithEmailAndPasswordParams): Promise<void>
+  signOut: () => Promise<void>
 }
 
 const authContext = createContext({} as AuthContextValue)
@@ -181,13 +183,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     []
   )
 
-  const value = useMemo(
+  const signOut = useCallback(() => firebaseSignOut(auth), [])
+
+  const value = useMemo<AuthContextValue>(
     () => ({
       user,
       registerWithEmailAndPassword,
       signInWithEmailAndPassword,
+      signOut,
     }),
-    [user, registerWithEmailAndPassword, signInWithEmailAndPassword]
+    [user, registerWithEmailAndPassword, signInWithEmailAndPassword, signOut]
   )
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>
