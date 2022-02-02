@@ -13,7 +13,7 @@ class MyDocument extends NextDocument {
             crossOrigin='true'
           />
           <link
-            href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap'
+            href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Roboto:wght@300;400;500;700;900&display=swap'
             rel='stylesheet'
           />
           <style
