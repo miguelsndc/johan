@@ -1,20 +1,12 @@
-import { RegisterForm } from '../components'
-
-type FormData = {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-}
+import { Header } from '../components'
+import { useAuth } from '../contexts/auth'
 
 function Home() {
-  const fakeSubmit = async (values: FormData) => {
-    console.log(values)
-  }
+  const { user, signOut } = useAuth()
 
   return (
     <div>
-      <RegisterForm handleSubmit={fakeSubmit} />
+      <Header user={user} onSignOut={signOut} />
     </div>
   )
 }

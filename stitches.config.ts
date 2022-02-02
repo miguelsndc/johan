@@ -1,4 +1,4 @@
-import { createStitches } from '@stitches/react';
+import { createStitches } from '@stitches/react'
 
 export const {
   createTheme,
@@ -14,6 +14,7 @@ export const {
   theme: {
     fonts: {
       roboto: 'Roboto, sans-serif',
+      mono: 'JetBrains Mono, monospace',
     },
     fontWeights: {
       light: 300,
@@ -57,4 +58,4 @@ export const {
     lg: '(min-width: 1024px)',
     xl: '(min-width: 1200px)',
   },
-});
+})
