@@ -9,13 +9,13 @@ import CreatePostDialog from '../create-post-dialog'
 import {
   RoundedButton,
   Container,
-  ButtonWrapper,
   Popover,
   PopoverContent,
   PopoverTrigger,
   ProfileDetails,
   Separator,
   ControlButton,
+  Menu,
 } from './styles'
 
 type User = {
@@ -41,7 +41,7 @@ export default function Header({ user, onSignOut }: HeaderProps) {
     <Container>
       <div>
         <h1>Johan</h1>
-        <ButtonWrapper>
+        <Menu>
           <RoundedButton>
             <AiOutlineHome size={24} color='#fff' />
           </RoundedButton>
@@ -82,7 +82,7 @@ export default function Header({ user, onSignOut }: HeaderProps) {
               </ControlButton>
             </PopoverContent>
           </Popover>
-        </ButtonWrapper>
+        </Menu>
       </div>
     </Container>
   )

@@ -22,7 +22,7 @@ const Container = styled('header', {
   },
 })
 
-const ButtonWrapper = styled('div', {
+const Menu = styled('div', {
   display: 'flex',
   gap: '1rem',
 })
@@ -150,7 +150,7 @@ const PopoverContent = PopoverStyledContent
 
 export {
   Container,
-  ButtonWrapper,
+  Menu,
   RoundedButton,
   ProfileDetails,
   Separator,
