@@ -1,5 +1,5 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover'
-import { styled } from '../../../stitches.config'
+import { keyframes, styled } from '../../../stitches.config'
 
 export const Container = styled('header', {
   display: 'flex',
@@ -102,11 +102,27 @@ export const ControlButton = styled('button', {
 
 // Radix
 
+const slideDownAndFade = keyframes({
+  '0%': { opacity: 0, transform: 'translateY(2px)' },
+  '100%': { opacity: 1, transform: 'translateY(0)' },
+})
+
+const slideUpAndFade = keyframes({
+  '0%': { opacity: 1, transform: 'translateY(0)' },
+  '100%': { opacity: 0, transform: 'translateY(2px)' },
+})
+
 const StyledContent = styled(PopoverPrimitive.Content, {
   borderRadius: 4,
   width: 260,
   backgroundColor: 'white',
   boxShadow: '0px 2px 12px #d4d4d8',
+  '&[data-state="open"]': {
+    animation: `${slideDownAndFade} 200ms ease-out`,
+  },
+  '&[data-state="closed"]': {
+    animation: `${slideUpAndFade} 200ms ease-in`,
+  },
 })
 
 const StyledTrigger = styled(PopoverPrimitive.Trigger, {
