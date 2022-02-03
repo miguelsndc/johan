@@ -1,7 +1,7 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { keyframes, styled } from '../../../stitches.config'
 
-export const Container = styled('header', {
+const Container = styled('header', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -22,12 +22,12 @@ export const Container = styled('header', {
   },
 })
 
-export const ButtonWrapper = styled('div', {
+const ButtonWrapper = styled('div', {
   display: 'flex',
   gap: '1rem',
 })
 
-export const RoundedButton = styled('button', {
+const RoundedButton = styled('button', {
   border: 'none',
   background: '$purple500',
   borderRadius: '50%',
@@ -46,7 +46,7 @@ export const RoundedButton = styled('button', {
   },
 })
 
-export const ProfileDetails = styled('div', {
+const ProfileDetails = styled('div', {
   display: 'flex',
   gap: '0.75rem',
   padding: '1rem 10px',
@@ -75,14 +75,14 @@ export const ProfileDetails = styled('div', {
   },
 })
 
-export const Separator = styled('hr', {
+const Separator = styled('hr', {
   border: 'none',
   height: 1,
   background: '$gray100',
   marginBottom: '0.5rem',
 })
 
-export const ControlButton = styled('button', {
+const ControlButton = styled('button', {
   border: 'none',
   fontFamily: 'inherit',
   background: '#fff',
@@ -112,8 +112,8 @@ const slideUpAndFade = keyframes({
   '100%': { opacity: 0, transform: 'translateY(2px)' },
 })
 
-const StyledContent = styled(PopoverPrimitive.Content, {
-  borderRadius: 4,
+const PopoverStyledContent = styled(PopoverPrimitive.Content, {
+  borderRadius: 6,
   width: 260,
   backgroundColor: 'white',
   boxShadow: '0px 2px 12px #d4d4d8',
@@ -144,6 +144,18 @@ const StyledTrigger = styled(PopoverPrimitive.Trigger, {
   },
 })
 
-export const Popover = PopoverPrimitive.Root
-export const PopoverTrigger = StyledTrigger
-export const PopoverContent = StyledContent
+const Popover = PopoverPrimitive.Root
+const PopoverTrigger = StyledTrigger
+const PopoverContent = PopoverStyledContent
+
+export {
+  Container,
+  ButtonWrapper,
+  RoundedButton,
+  ProfileDetails,
+  Separator,
+  ControlButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+}
