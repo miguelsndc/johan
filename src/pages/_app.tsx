@@ -4,6 +4,7 @@ import { globalStyles } from '../styles/globals'
 import { AuthProvider } from '../contexts/auth'
 
 import '../config/firebase'
+import Layout from '../components/layout'
 
 function MyApp({ Component, pageProps }: AppProps) {
   globalStyles()
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Toaster />
       <AuthProvider>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </AuthProvider>
     </>
   )

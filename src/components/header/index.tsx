@@ -1,10 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 import { AiOutlineHome, AiOutlinePlus } from 'react-icons/ai'
 import { IoLogOutOutline } from 'react-icons/io5'
 import { theme } from '../../../stitches.config'
-import CreatePostDialog from '../create-post-dialog'
 
 import {
   RoundedButton,
@@ -16,6 +14,7 @@ import {
   Separator,
   ControlButton,
   Menu,
+  RoundedButtonAsLink,
 } from './styles'
 
 type User = {
@@ -33,10 +32,6 @@ type HeaderProps = {
 }
 
 export default function Header({ user, onSignOut }: HeaderProps) {
-  const [isDialogOpened, setIsDialogOpened] = useState(false)
-
-  const handleOpenDialog = () => setIsDialogOpened(true)
-
   return (
     <Container>
       <div>
@@ -46,15 +41,11 @@ export default function Header({ user, onSignOut }: HeaderProps) {
             <AiOutlineHome size={24} color='#fff' />
           </RoundedButton>
 
-          <RoundedButton onClick={handleOpenDialog}>
-            <AiOutlinePlus size={24} color='#fff' />
-          </RoundedButton>
-
-          <CreatePostDialog
-            user={user}
-            isOpened={isDialogOpened}
-            onOpenChange={setIsDialogOpened}
-          />
+          <Link href='/article/create' passHref>
+            <RoundedButtonAsLink>
+              <AiOutlinePlus size={24} color='#fff' />
+            </RoundedButtonAsLink>
+          </Link>
 
           <Popover>
             <PopoverTrigger>
