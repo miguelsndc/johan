@@ -8,7 +8,7 @@ type Props = {
   onChange: (doc: string) => void
 }
 
-export default function Editor({ initialDoc, onChange }: Props) {
+export default function MdEditor({ initialDoc, onChange }: Props) {
   const handleEditorChange = useCallback(
     (state: EditorState) => onChange(state.doc.toString()),
     [onChange]

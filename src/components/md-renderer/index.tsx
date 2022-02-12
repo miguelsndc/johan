@@ -24,7 +24,7 @@ type Props = {
   doc: string
 }
 
-export default function Preview({ doc }: Props) {
+export default function MdRenderer({ doc }: Props) {
   const md = unified()
     .use(parse)
     .use(gfm)
@@ -40,7 +40,7 @@ export default function Preview({ doc }: Props) {
     .processSync(doc).result as ReactNode
 
   return (
-    <Container className='markdown-body' data-testid='preview'>
+    <Container className='markdown-body' data-testid='renderer'>
       {md}
     </Container>
   )

@@ -1,5 +1,5 @@
-import Preview from '../preview'
-import Editor from '../editor'
+import MdRenderer from '../md-renderer'
+import MdEditor from '../md-editor'
 import { styled } from '../../../stitches.config'
 
 const Wrapper = styled('div', {
@@ -15,8 +15,8 @@ type Props = {
 export default function EditorContainer({ doc, onDocChange }: Props) {
   return (
     <Wrapper>
-      <Editor initialDoc={doc} onChange={onDocChange} />
-      <Preview doc={doc} />
+      <MdEditor initialDoc={doc} onChange={onDocChange} />
+      <MdRenderer doc={doc} />
     </Wrapper>
   )
 }

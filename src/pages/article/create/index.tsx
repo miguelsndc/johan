@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import EditorContainer from '../../../components/editor-container'
+import { MdEditorContainer } from '../../../components'
 
 export default function CreateArticlePage() {
   const [doc, setDoc] = useState('# Hi ')
@@ -9,5 +9,5 @@ export default function CreateArticlePage() {
     setDoc(newDoc)
   }, [])
 
-  return <EditorContainer doc={doc} onDocChange={handleDocChange} />
+  return <MdEditorContainer doc={doc} onDocChange={handleDocChange} />
 }
