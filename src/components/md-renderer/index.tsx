@@ -6,6 +6,7 @@ import rehypeReact from 'rehype-react'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
+import remarkBreaks from 'remark-breaks'
 import { Container } from './styles'
 import RemarkCode from '../remark-code'
 
@@ -27,6 +28,7 @@ type Props = {
 export default function MdRenderer({ doc }: Props) {
   const md = unified()
     .use(parse)
+    .use(remarkBreaks)
     .use(gfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
