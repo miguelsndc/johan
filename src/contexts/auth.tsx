@@ -7,13 +7,14 @@ import {
   useMemo,
   useEffect,
 } from 'react'
-
+import nookies from 'nookies'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   UserCredential,
   signOut as firebaseSignOut,
-  onAuthStateChanged,
+  onIdTokenChanged,
+  getIdToken,
 } from 'firebase/auth'
 import {
   setDoc,
@@ -198,17 +199,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
   )
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (persistedUser) => {
+    const unsubscribe = onIdTokenChanged(auth, (persistedUser) => {
       if (persistedUser) {
         const userDoc = doc(firestore, `users/${persistedUser.uid}`)
+
+        getIdToken(persistedUser).then((token) => {
+          nookies.set(undefined, 'token', token, { path: '/' })
+        })
 
         getDoc(userDoc).then((docSnapshot) =>
           setUser(docSnapshot.data() as User)
         )
-      } else setUser(null)
+      } else {
+        nookies.set(undefined, 'token', '', { path: '/' })
+        setUser(null)
+      }
     })
 
     return () => unsubscribe()
+  }, [])
+
+  console.log(user)
+
+  useEffect(() => {
+    const handle = setInterval(async () => {
+      const { currentUser } = auth
+
+      if (currentUser) await getIdToken(currentUser, true)
+    }, 10 * 60 * 1000)
+
+    return () => clearInterval(handle)
   }, [])
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>
