@@ -1,11 +1,11 @@
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
-import { useCallback, useState } from 'react'
-import nookies from 'nookies'
+import { useCallback, useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { Layout, MdEditorContainer } from '../../../components'
 import { firestore } from '../../../config/firebase'
-import { admin } from '../../../config/firebase-admin'
+import { useAuth } from '../../../contexts/auth'
+import { styled, theme } from '../../../../stitches.config'
+import Spinner from '../../../components/spinner'
 
 type Draft = {
   id: string
@@ -15,59 +15,104 @@ type Draft = {
   content: string
 }
 
-type Props = {
-  draft: Draft
-}
+const Overlay = styled('div', {
+  position: 'absolute',
+  inset: 0,
+  background: '$gray300',
+  opacity: 0.5,
+  filter: 'blur(16px)',
 
-export default function CreateArticlePage({ draft }: Props) {
-  const [doc, setDoc] = useState(draft.content)
+  '& + div': {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    p: {
+      fontSize: '1.25rem',
+      color: '$gray600',
+      marginTop: '1rem',
+    },
+  },
+})
 
-  const handleDocChange = useCallback((newDoc: string) => {
-    setDoc(newDoc)
-  }, [])
+export default function CreateArticlePage() {
+  const [draft, setDraft] = useState<Draft | null>(null)
+  const [doc, setDoc] = useState('')
+  const [loading, setLoading] = useState(true)
+  const { user } = useAuth()
+  const router = useRouter()
+  const { id } = router.query
 
-  const handleDocSave = useCallback(async (docToBeSaved: string) => {
-    console.log(docToBeSaved)
-  }, [])
+  const handleSave = useCallback(
+    async (docSnapshot: string) => console.log(docSnapshot),
+    []
+  )
 
-  const handleDocPost = useCallback((docToBeSubmitted: string) => {
-    console.log(docToBeSubmitted)
-  }, [])
+  const handlePostSubmit = useCallback(
+    async (docSnapshot: string) => console.log(docSnapshot),
+    []
+  )
+
+  const handleDocChange = useCallback(
+    async (newDoc: string) => setDoc(newDoc),
+    []
+  )
+
+  useEffect(() => {
+    const setup = async () => {
+      const [collection, getDocs, query, where] = await Promise.all([
+        (await import('firebase/firestore')).collection,
+        (await import('firebase/firestore')).getDocs,
+        (await import('firebase/firestore')).query,
+        (await import('firebase/firestore')).where,
+      ])
+
+      const getDraftById = query(
+        collection(firestore, `users/${user?.uid}/drafts`),
+        where('id', '==', id)
+      )
+
+      const querySnapshot = await getDocs(getDraftById)
+
+      const [draftData] = querySnapshot.docs.map(
+        (snapshot) => snapshot.data() as Draft
+      )
+
+      if (draftData) {
+        setDraft(draftData)
+        setDoc(draftData.content)
+        setLoading(false)
+      }
+    }
+
+    if (router.isReady) setup()
+  }, [id, user, router.isReady])
 
   return (
     <>
       <Head>
-        <title>Drafts | {draft.name}</title>
+        <title>Johan | {draft?.name}</title>
       </Head>
       <Layout>
-        <MdEditorContainer
-          doc={doc}
-          onDocChange={handleDocChange}
-          onPost={handleDocPost}
-          onSave={handleDocSave}
-        />
+        {!loading ? (
+          <MdEditorContainer
+            doc={doc}
+            onSave={handleSave}
+            onPost={handlePostSubmit}
+            onDocChange={handleDocChange}
+          />
+        ) : (
+          <>
+            <Overlay />
+            <div>
+              <Spinner size={64} color={String(theme.colors.gray700)} />
+              <p>Getting everything up and running for you...</p>
+            </div>
+          </>
+        )}
       </Layout>
     </>
   )
-}
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const cookies = nookies.get(ctx)
-  const { id } = ctx.query
-
-  const token = await admin.auth().verifyIdToken(cookies.token)
-  const { uid } = token
-
-  const getDraftById = query(
-    collection(firestore, `users/${uid}/drafts`),
-    where('id', '==', id)
-  )
-
-  const draft = (await getDocs(getDraftById)).docs[0].data() as Draft
-
-  return {
-    props: {
-      draft,
-    },
-  }
 }
