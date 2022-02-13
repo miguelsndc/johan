@@ -5,6 +5,7 @@ import {
   useState,
   useCallback,
   useMemo,
+  useEffect,
 } from 'react'
 
 import {
@@ -12,6 +13,7 @@ import {
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   UserCredential,
   signOut as firebaseSignOut,
+  onAuthStateChanged,
 } from 'firebase/auth'
 import {
   setDoc,
@@ -194,6 +196,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }),
     [user, registerWithEmailAndPassword, signInWithEmailAndPassword, signOut]
   )
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (persistedUser) => {
+      if (persistedUser) {
+        const userDoc = doc(firestore, `users/${persistedUser.uid}`)
+
+        getDoc(userDoc).then((docSnapshot) =>
+          setUser(docSnapshot.data() as User)
+        )
+      } else setUser(null)
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>
 }
