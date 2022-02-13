@@ -1,7 +1,6 @@
 import { styled } from '../../../stitches.config'
 
 const Button = styled('button', {
-  width: '100%',
   color: '#fff',
   background: '$purple500',
   border: 'none',
@@ -22,6 +21,33 @@ const Button = styled('button', {
     cursor: 'auto',
     pointerEvents: 'none',
     opacity: '0.5',
+  },
+
+  variants: {
+    color: {
+      secondary: {
+        background: '$gray400',
+        '&:hover': {
+          background: '$gray500',
+        },
+      },
+      primary: {
+        background: '$purple500',
+      },
+    },
+    arrangement: {
+      fluid: {
+        width: '100%',
+      },
+      static: {
+        minWidth: 105,
+      },
+    },
+  },
+
+  defaultVariants: {
+    color: 'primary',
+    arrangement: 'fluid',
   },
 })
 
