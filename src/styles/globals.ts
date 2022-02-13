@@ -11,6 +11,7 @@ export const globalStyles = globalCss({
   body: {
     fontFamily: '$roboto',
     color: '$gray900',
+    letterSpacing: '-0.035em',
   },
   code: {
     fontFamily: '$mono',
