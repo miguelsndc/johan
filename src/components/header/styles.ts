@@ -144,28 +144,6 @@ const StyledTrigger = styled(PopoverPrimitive.Trigger, {
   },
 })
 
-const RoundedButtonAsLink = styled('a', {
-  border: 'none',
-  background: '$purple500',
-  borderRadius: '50%',
-  width: '2.5rem',
-  height: '2.5rem',
-  cursor: 'pointer',
-  fontSize: '0',
-  transition: 'background .3s',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-
-  '&:hover': {
-    background: '$purple400',
-  },
-
-  img: {
-    borderRadius: '50%',
-  },
-})
-
 const Popover = PopoverPrimitive.Root
 const PopoverTrigger = StyledTrigger
 const PopoverContent = PopoverStyledContent
@@ -180,5 +158,4 @@ export {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  RoundedButtonAsLink,
 }

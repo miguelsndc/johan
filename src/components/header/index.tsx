@@ -14,7 +14,6 @@ import {
   Separator,
   ControlButton,
   Menu,
-  RoundedButtonAsLink,
 } from './styles'
 
 type User = {
@@ -29,9 +28,14 @@ type User = {
 type HeaderProps = {
   user: User | null
   onSignOut: () => Promise<void>
+  onStartPostCreationFlow: () => void
 }
 
-export default function Header({ user, onSignOut }: HeaderProps) {
+export default function Header({
+  user,
+  onSignOut,
+  onStartPostCreationFlow,
+}: HeaderProps) {
   return (
     <Container>
       <div>
@@ -41,11 +45,9 @@ export default function Header({ user, onSignOut }: HeaderProps) {
             <AiOutlineHome size={24} color='#fff' />
           </RoundedButton>
 
-          <Link href='/article/create' passHref>
-            <RoundedButtonAsLink>
-              <AiOutlinePlus size={24} color='#fff' />
-            </RoundedButtonAsLink>
-          </Link>
+          <RoundedButton onClick={onStartPostCreationFlow}>
+            <AiOutlinePlus size={24} color='#fff' />
+          </RoundedButton>
 
           <Popover>
             <PopoverTrigger>
