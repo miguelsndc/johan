@@ -3,31 +3,69 @@ import user from '@testing-library/user-event'
 import { useCallback, useState } from 'react'
 import MdEditorContainer from '.'
 
-function MockEditorContainer({ initialDoc }: { initialDoc: string }) {
+function MockEditorContainer({
+  initialDoc,
+  onPost,
+  onSave,
+}: {
+  initialDoc: string
+  onSave: () => void
+  onPost: () => void
+}) {
   const [doc, setDoc] = useState(initialDoc)
 
   const handleDocChange = useCallback((newDoc: string) => {
     setDoc(newDoc)
   }, [])
 
-  return <MdEditorContainer doc={doc} onDocChange={handleDocChange} />
+  return (
+    <MdEditorContainer
+      doc={doc}
+      onDocChange={handleDocChange}
+      onPost={onPost}
+      onSave={onSave}
+    />
+  )
 }
 
 describe('components/editor-container', () => {
+  const save = jest.fn()
+  const post = jest.fn()
+
   it('editor content should reflect in renderer', () => {
-    render(<MockEditorContainer initialDoc='# hello' />)
+    render(
+      <MockEditorContainer initialDoc='# hello' onPost={post} onSave={save} />
+    )
 
     expect(screen.getByRole('textbox')).toHaveTextContent('# hello')
     expect(screen.getByTestId('renderer')).toHaveTextContent('hello')
   })
 
   it('changes on editor should reflect in renderer', async () => {
-    render(<MockEditorContainer initialDoc='' />)
+    render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
     const editor = screen.getByRole('textbox')
 
     user.type(editor, '# hello')
 
     expect(editor).toHaveTextContent('# hello')
     expect(await screen.findByTestId('renderer')).toHaveTextContent('hello')
+  })
+
+  it('should save post on button click', () => {
+    render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
+
+    const saveBtn = screen.getByRole('button', { name: /save/i })
+    user.click(saveBtn)
+
+    expect(save).toHaveBeenCalled()
+  })
+
+  it('should submit post on button click', () => {
+    render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
+
+    const postBtn = screen.getByRole('button', { name: /post/i })
+    user.click(postBtn)
+
+    expect(post).toHaveBeenCalled()
   })
 })
