@@ -6,9 +6,14 @@ import { Container } from './styles'
 type Props = {
   initialDoc: string
   onChange: (doc: string) => void
+  isZenModeEnabled: boolean
 }
 
-export default function MdEditor({ initialDoc, onChange }: Props) {
+export default function MdEditor({
+  initialDoc,
+  onChange,
+  isZenModeEnabled,
+}: Props) {
   const handleEditorChange = useCallback(
     (state: EditorState) => onChange(state.doc.toString()),
     [onChange]
@@ -19,5 +24,5 @@ export default function MdEditor({ initialDoc, onChange }: Props) {
     onChange: handleEditorChange,
   })
 
-  return <Container ref={refContainer} />
+  return <Container ref={refContainer} zenMode={isZenModeEnabled} />
 }

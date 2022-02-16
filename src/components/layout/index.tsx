@@ -1,18 +1,26 @@
 import { ReactNode, useState } from 'react'
 import { doc, setDoc } from 'firebase/firestore'
+import dynamic from 'next/dynamic'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import Header from '../header'
-import ArticleCreationDialog from '../article-creation-dialog'
 
 import { useAuth } from '../../contexts/auth'
 import { firestore } from '../../config/firebase'
 
 type LayoutProps = {
   children: ReactNode
+  isZenModeEnabled?: boolean
 }
 
-export default function Layout({ children }: LayoutProps) {
+const DynamicArticleCreationDialog = dynamic(
+  () => import('../article-creation-dialog')
+)
+
+export default function Layout({
+  children,
+  isZenModeEnabled = false,
+}: LayoutProps) {
   const { user, signOut } = useAuth()
   const [isArticleCreationDialogOpened, setIsArticleCreationDialogOpened] =
     useState(false)
@@ -48,12 +56,14 @@ Start writing here...`,
 
   return (
     <>
-      <Header
-        user={user}
-        onSignOut={signOut}
-        onStartPostCreationFlow={handleShowArticleCreationDialog}
-      />
-      <ArticleCreationDialog
+      {!isZenModeEnabled && (
+        <Header
+          user={user}
+          onSignOut={signOut}
+          onStartPostCreationFlow={handleShowArticleCreationDialog}
+        />
+      )}
+      <DynamicArticleCreationDialog
         open={isArticleCreationDialogOpened}
         onClose={handleCloseArticleCreationDialog}
         onOpenChange={setIsArticleCreationDialogOpened}

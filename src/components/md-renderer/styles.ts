@@ -10,4 +10,12 @@ export const Container = styled('div', {
     backgroundColor: '$gray100',
     padding: 12,
   },
+
+  variants: {
+    zenMode: {
+      true: {
+        height: '100vh',
+      },
+    },
+  },
 })

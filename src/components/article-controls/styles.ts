@@ -1,13 +1,5 @@
 import { styled } from '../../../stitches.config'
 
-const Container = styled('div', {
-  position: 'absolute',
-  top: 20,
-  right: 40,
-  display: 'flex',
-  gap: '1rem',
-})
-
 const ButtonDefaults = styled('button', {
   all: 'unset',
   display: 'block',
@@ -20,6 +12,10 @@ const ButtonDefaults = styled('button', {
   height: '2.25rem',
   textAlign: 'center',
   transition: 'background .2s',
+  '&:focus': {
+    outlineStyle: 'auto',
+    outlineColor: '$purple400',
+  },
 })
 
 const SaveButton = styled(ButtonDefaults, {
@@ -34,6 +30,15 @@ const PostButton = styled(ButtonDefaults, {
   '&:hover': {
     background: '$purple800',
   },
+})
+
+const Container = styled('div', {
+  position: 'absolute',
+  top: 20,
+  right: 40,
+  display: 'flex',
+  gap: '1rem',
+  transition: 'opacity 150ms',
 })
 
 export { Container, SaveButton, PostButton }

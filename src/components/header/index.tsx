@@ -37,7 +37,7 @@ export default function Header({
   onStartPostCreationFlow,
 }: HeaderProps) {
   return (
-    <Container>
+    <Container data-testid='header'>
       <div>
         <h1>Johan</h1>
         <Menu>

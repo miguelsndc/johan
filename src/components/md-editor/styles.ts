@@ -7,4 +7,15 @@ export const Container = styled('div', {
     height: 'calc(100vh - 7vh)',
     paddingLeft: '1rem',
   },
+
+  variants: {
+    zenMode: {
+      true: {
+        '& .cm-editor': {
+          height: '100vh',
+          paddingLeft: '1rem',
+        },
+      },
+    },
+  },
 })

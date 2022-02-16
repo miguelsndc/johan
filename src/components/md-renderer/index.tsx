@@ -23,9 +23,10 @@ const schema = {
 
 type Props = {
   doc: string
+  isZenModeEnabled: boolean
 }
 
-export default function MdRenderer({ doc }: Props) {
+export default function MdRenderer({ doc, isZenModeEnabled }: Props) {
   const md = unified()
     .use(parse)
     .use(remarkBreaks)
@@ -42,7 +43,11 @@ export default function MdRenderer({ doc }: Props) {
     .processSync(doc).result as ReactNode
 
   return (
-    <Container className='markdown-body' data-testid='renderer'>
+    <Container
+      className='markdown-body'
+      data-testid='renderer'
+      zenMode={isZenModeEnabled}
+    >
       {md}
     </Container>
   )

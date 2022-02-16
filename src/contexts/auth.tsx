@@ -219,8 +219,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => unsubscribe()
   }, [])
 
-  console.log(user)
-
   useEffect(() => {
     const handle = setInterval(async () => {
       const { currentUser } = auth

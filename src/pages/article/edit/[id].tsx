@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { createPortal } from 'react-dom'
 import { Layout, MdEditorContainer } from '../../../components'
 import { firestore } from '../../../config/firebase'
 import { useAuth } from '../../../contexts/auth'
 import { styled, theme } from '../../../../stitches.config'
 import Spinner from '../../../components/spinner'
+import useMounted from '../../../hooks/use-mounted'
 
 type Draft = {
   id: string
@@ -18,22 +20,18 @@ type Draft = {
 const Overlay = styled('div', {
   position: 'absolute',
   inset: 0,
-  background: '$gray300',
-  opacity: 0.5,
-  filter: 'blur(16px)',
+  background: '$gray800',
+  opacity: 0.85,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
 
-  '& + div': {
-    position: 'absolute',
-    inset: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    p: {
-      fontSize: '1.25rem',
-      color: '$gray600',
-      marginTop: '1rem',
-    },
+  p: {
+    color: '$gray300',
+    marginTop: '0.75rem',
+    fontFamily: '$mono',
+    fontSize: '1.25rem',
   },
 })
 
@@ -41,7 +39,9 @@ export default function CreateArticlePage() {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [doc, setDoc] = useState('')
   const [loading, setLoading] = useState(true)
+  const [isZenModeEnabled, setIsZenModeEnabled] = useState(false)
   const { user } = useAuth()
+  const mounted = useMounted()
   const router = useRouter()
   const { id } = router.query
 
@@ -83,7 +83,10 @@ export default function CreateArticlePage() {
       if (draftData) {
         setDraft(draftData)
         setDoc(draftData.content)
-        setLoading(false)
+
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
       }
     }
 
@@ -95,22 +98,27 @@ export default function CreateArticlePage() {
       <Head>
         <title>Johan | {draft?.name}</title>
       </Head>
-      <Layout>
+      <Layout isZenModeEnabled={isZenModeEnabled}>
         {!loading ? (
           <MdEditorContainer
             doc={doc}
             onSave={handleSave}
+            onToggleZenMode={setIsZenModeEnabled}
+            isZenModeEnabled={isZenModeEnabled}
             onPost={handlePostSubmit}
             onDocChange={handleDocChange}
           />
         ) : (
-          <>
-            <Overlay />
-            <div>
-              <Spinner size={64} color={String(theme.colors.gray700)} />
-              <p>Getting everything up and running for you...</p>
-            </div>
-          </>
+          <div aria-modal='true'>
+            {mounted &&
+              createPortal(
+                <Overlay>
+                  <Spinner size={64} color={String(theme.colors.gray300)} />
+                  <p>Getting everything up and running for you...</p>
+                </Overlay>,
+                document.body
+              )}
+          </div>
         )}
       </Layout>
     </>
