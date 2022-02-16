@@ -14,8 +14,8 @@ type Props = {
   onDocChange: (newDoc: string) => void
   onSave: (doc: string) => void
   onPost: (doc: string) => void
-  onToggleZenMode: (current: boolean) => void
-  isZenModeEnabled: boolean
+  onToggleHeaderVisibility: (current: boolean) => void
+  isHeaderHidden: boolean
 }
 
 export default function EditorContainer({
@@ -23,8 +23,8 @@ export default function EditorContainer({
   onDocChange,
   onPost,
   onSave,
-  isZenModeEnabled,
-  onToggleZenMode,
+  isHeaderHidden,
+  onToggleHeaderVisibility,
 }: Props) {
   return (
     <Wrapper>
@@ -32,15 +32,15 @@ export default function EditorContainer({
         onSave={onSave}
         onPost={onPost}
         doc={doc}
-        onToggleZenMode={onToggleZenMode}
-        isZenModeEnabled={isZenModeEnabled}
+        onToggleHeaderVisibility={onToggleHeaderVisibility}
+        isHeaderHidden={isHeaderHidden}
       />
       <MdEditor
         initialDoc={doc}
         onChange={onDocChange}
-        isZenModeEnabled={isZenModeEnabled}
+        isHeaderHidden={isHeaderHidden}
       />
-      <MdRenderer doc={doc} isZenModeEnabled={isZenModeEnabled} />
+      <MdRenderer doc={doc} isHeaderHidden={isHeaderHidden} />
     </Wrapper>
   )
 }

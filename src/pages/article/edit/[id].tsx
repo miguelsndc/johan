@@ -39,7 +39,7 @@ export default function CreateArticlePage() {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [doc, setDoc] = useState('')
   const [loading, setLoading] = useState(true)
-  const [isZenModeEnabled, setIsZenModeEnabled] = useState(false)
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false)
   const { user } = useAuth()
   const mounted = useMounted()
   const router = useRouter()
@@ -98,13 +98,13 @@ export default function CreateArticlePage() {
       <Head>
         <title>Johan | {draft?.name}</title>
       </Head>
-      <Layout isZenModeEnabled={isZenModeEnabled}>
+      <Layout isHeaderHidden={isHeaderHidden}>
         {!loading ? (
           <MdEditorContainer
             doc={doc}
             onSave={handleSave}
-            onToggleZenMode={setIsZenModeEnabled}
-            isZenModeEnabled={isZenModeEnabled}
+            onToggleHeaderVisibility={setIsHeaderHidden}
+            isHeaderHidden={isHeaderHidden}
             onPost={handlePostSubmit}
             onDocChange={handleDocChange}
           />

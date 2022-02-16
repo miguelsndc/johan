@@ -1,5 +1,5 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover'
-import { keyframes, styled } from '../../../stitches.config'
+import { keyframes, styled, theme } from '../../../stitches.config'
 
 const Container = styled('header', {
   display: 'flex',
@@ -116,7 +116,7 @@ const PopoverStyledContent = styled(PopoverPrimitive.Content, {
   borderRadius: 6,
   width: 260,
   backgroundColor: 'white',
-  boxShadow: '0px 2px 12px #d4d4d8',
+  boxShadow: `0px 2px 12px ${theme.colors.gray500}`,
   '&[data-state="open"]': {
     animation: `${slideDownAndFade} 200ms ease-out`,
   },

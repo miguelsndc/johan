@@ -10,7 +10,7 @@ import { firestore } from '../../config/firebase'
 
 type LayoutProps = {
   children: ReactNode
-  isZenModeEnabled?: boolean
+  isHeaderHidden?: boolean
 }
 
 const DynamicArticleCreationDialog = dynamic(
@@ -19,7 +19,7 @@ const DynamicArticleCreationDialog = dynamic(
 
 export default function Layout({
   children,
-  isZenModeEnabled = false,
+  isHeaderHidden = false,
 }: LayoutProps) {
   const { user, signOut } = useAuth()
   const [isArticleCreationDialogOpened, setIsArticleCreationDialogOpened] =
@@ -56,7 +56,7 @@ Start writing here...`,
 
   return (
     <>
-      {!isZenModeEnabled && (
+      {!isHeaderHidden && (
         <Header
           user={user}
           onSignOut={signOut}

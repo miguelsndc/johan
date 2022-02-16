@@ -5,7 +5,7 @@ export const Container = styled('div', {
   fontSize: '1rem',
   '& .cm-editor': {
     height: 'calc(100vh - 7vh)',
-    paddingLeft: '1rem',
+    paddingLeft: '1.5rem',
   },
 
   variants: {

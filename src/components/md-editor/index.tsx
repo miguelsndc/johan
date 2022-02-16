@@ -6,13 +6,13 @@ import { Container } from './styles'
 type Props = {
   initialDoc: string
   onChange: (doc: string) => void
-  isZenModeEnabled: boolean
+  isHeaderHidden: boolean
 }
 
 export default function MdEditor({
   initialDoc,
   onChange,
-  isZenModeEnabled,
+  isHeaderHidden,
 }: Props) {
   const handleEditorChange = useCallback(
     (state: EditorState) => onChange(state.doc.toString()),
@@ -24,5 +24,5 @@ export default function MdEditor({
     onChange: handleEditorChange,
   })
 
-  return <Container ref={refContainer} zenMode={isZenModeEnabled} />
+  return <Container ref={refContainer} zenMode={isHeaderHidden} />
 }

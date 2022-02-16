@@ -14,17 +14,17 @@ function MockEditorContainer({
   onPost: () => void
 }) {
   const [doc, setDoc] = useState(initialDoc)
-  const [isZenModeEnabled, setIsZenModeEnabled] = useState(false)
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false)
 
   const handleDocChange = useCallback((newDoc: string) => {
     setDoc(newDoc)
   }, [])
 
   return (
-    <Layout isZenModeEnabled={isZenModeEnabled}>
+    <Layout isHeaderHidden={isHeaderHidden}>
       <MdEditorContainer
-        isZenModeEnabled={isZenModeEnabled}
-        onToggleZenMode={setIsZenModeEnabled}
+        isHeaderHidden={isHeaderHidden}
+        onToggleHeaderVisibility={setIsHeaderHidden}
         doc={doc}
         onDocChange={handleDocChange}
         onPost={onPost}

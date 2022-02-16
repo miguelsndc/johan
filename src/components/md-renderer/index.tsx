@@ -23,10 +23,10 @@ const schema = {
 
 type Props = {
   doc: string
-  isZenModeEnabled: boolean
+  isHeaderHidden: boolean
 }
 
-export default function MdRenderer({ doc, isZenModeEnabled }: Props) {
+export default function MdRenderer({ doc, isHeaderHidden }: Props) {
   const md = unified()
     .use(parse)
     .use(remarkBreaks)
@@ -46,7 +46,7 @@ export default function MdRenderer({ doc, isZenModeEnabled }: Props) {
     <Container
       className='markdown-body'
       data-testid='renderer'
-      zenMode={isZenModeEnabled}
+      headerHidden={isHeaderHidden}
     >
       {md}
     </Container>

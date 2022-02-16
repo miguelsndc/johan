@@ -12,7 +12,7 @@ export const Container = styled('div', {
   },
 
   variants: {
-    zenMode: {
+    headerHidden: {
       true: {
         height: '100vh',
       },

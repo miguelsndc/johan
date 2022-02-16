@@ -4,8 +4,8 @@ import { Container, PostButton, SaveButton } from './styles'
 type Props = {
   onSave: (doc: string) => void
   onPost: (doc: string) => void
-  onToggleZenMode: (current: boolean) => void
-  isZenModeEnabled: boolean
+  onToggleHeaderVisibility: (current: boolean) => void
+  isHeaderHidden: boolean
   doc: string
 }
 
@@ -13,8 +13,8 @@ export default function ArticleControls({
   onPost,
   onSave,
   doc,
-  onToggleZenMode,
-  isZenModeEnabled,
+  onToggleHeaderVisibility,
+  isHeaderHidden,
 }: Props) {
   const handleSave = () => onSave(doc)
 
@@ -23,10 +23,10 @@ export default function ArticleControls({
   return (
     <Container role='menubar'>
       <Switch
-        label='Zen mode'
-        checked={isZenModeEnabled}
+        label='Hide header'
+        checked={isHeaderHidden}
         defaultChecked={false}
-        onCheckedChange={onToggleZenMode}
+        onCheckedChange={onToggleHeaderVisibility}
       />
       <SaveButton type='button' onClick={handleSave}>
         save
