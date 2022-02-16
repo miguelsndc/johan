@@ -16,4 +16,18 @@ export const globalStyles = globalCss({
   code: {
     fontFamily: '$mono',
   },
+
+  html: {
+    fontSize: '87.5%',
+  },
+
+  '@md': {
+    html: { fontSize: '93.75%' },
+  },
+
+  '@lg': {
+    html: {
+      fontSize: '100%',
+    },
+  },
 })
