@@ -2,6 +2,12 @@ import Head from 'next/head'
 import { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { createPortal } from 'react-dom'
+import {
+  collection,
+  updateDoc,
+  getDoc,
+  doc as getDocRef,
+} from 'firebase/firestore'
 import { Layout, MdEditorContainer } from '../../../components'
 import { firestore } from '../../../config/firebase'
 import { useAuth } from '../../../contexts/auth'
@@ -46,8 +52,19 @@ export default function CreateArticlePage() {
   const { id } = router.query
 
   const handleSave = useCallback(
-    async (docSnapshot: string) => console.log(docSnapshot),
-    []
+    async (docSnapshot: string) => {
+      const newDraft = { ...draft, content: docSnapshot }
+
+      const currentUserDraftsCollection = collection(
+        firestore,
+        `users/${user?.uid}/drafts`
+      )
+
+      const docRef = getDocRef(currentUserDraftsCollection, String(id))
+
+      await updateDoc(docRef, newDraft)
+    },
+    [draft, id, user?.uid]
   )
 
   const handlePostSubmit = useCallback(
@@ -62,23 +79,16 @@ export default function CreateArticlePage() {
 
   useEffect(() => {
     const setup = async () => {
-      const [collection, getDocs, query, where] = await Promise.all([
-        (await import('firebase/firestore')).collection,
-        (await import('firebase/firestore')).getDocs,
-        (await import('firebase/firestore')).query,
-        (await import('firebase/firestore')).where,
-      ])
-
-      const getDraftById = query(
-        collection(firestore, `users/${user?.uid}/drafts`),
-        where('id', '==', id)
+      const currentUserDraftsCollection = collection(
+        firestore,
+        `users/${user?.uid}/drafts`
       )
 
-      const querySnapshot = await getDocs(getDraftById)
+      const docRef = getDocRef(currentUserDraftsCollection, String(id))
 
-      const [draftData] = querySnapshot.docs.map(
-        (snapshot) => snapshot.data() as Draft
-      )
+      const docSnapshot = await getDoc(docRef)
+
+      const draftData = docSnapshot.data() as Draft
 
       if (draftData) {
         setDraft(draftData)
@@ -96,7 +106,7 @@ export default function CreateArticlePage() {
   return (
     <>
       <Head>
-        <title>Johan | {draft?.name}</title>
+        <title>Johan | {draft?.name || 'Setting up...'}</title>
       </Head>
       <Layout isHeaderHidden={isHeaderHidden}>
         {!loading ? (
