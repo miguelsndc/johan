@@ -2,7 +2,9 @@ import { styled } from '../../../stitches.config'
 
 const ButtonDefaults = styled('button', {
   all: 'unset',
-  display: 'block',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   color: '#fff',
   fontWeight: 400,
   textTransform: 'capitalize',
