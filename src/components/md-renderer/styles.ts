@@ -12,7 +12,7 @@ export const Container = styled('div', {
   },
 
   variants: {
-    headerHidden: {
+    fullHeight: {
       true: {
         height: '100vh',
       },

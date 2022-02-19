@@ -10,8 +10,8 @@ function MockEditorContainer({
   onSave,
 }: {
   initialDoc: string
-  onSave: () => void
-  onPost: () => void
+  onSave: () => Promise<void>
+  onPost: () => Promise<void>
 }) {
   const [doc, setDoc] = useState(initialDoc)
   const [isHeaderHidden, setIsHeaderHidden] = useState(false)

@@ -9,7 +9,7 @@ export const Container = styled('div', {
   },
 
   variants: {
-    zenMode: {
+    fullHeight: {
       true: {
         '& .cm-editor': {
           height: '100vh',

@@ -23,10 +23,10 @@ const schema = {
 
 type Props = {
   doc: string
-  isHeaderHidden: boolean
+  fullHeight: boolean
 }
 
-export default function MdRenderer({ doc, isHeaderHidden }: Props) {
+export default function MdRenderer({ doc, fullHeight }: Props) {
   const md = unified()
     .use(parse)
     .use(remarkBreaks)
@@ -46,7 +46,7 @@ export default function MdRenderer({ doc, isHeaderHidden }: Props) {
     <Container
       className='markdown-body'
       data-testid='renderer'
-      headerHidden={isHeaderHidden}
+      fullHeight={fullHeight}
     >
       {md}
     </Container>

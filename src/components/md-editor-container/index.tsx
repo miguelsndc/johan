@@ -12,8 +12,8 @@ const Wrapper = styled('div', {
 type Props = {
   doc: string
   onDocChange: (newDoc: string) => void
-  onSave: (doc: string) => void
-  onPost: (doc: string) => void
+  onSave: (doc: string) => Promise<void>
+  onPost: (doc: string) => Promise<void>
   onToggleHeaderVisibility: (current: boolean) => void
   isHeaderHidden: boolean
 }
@@ -38,9 +38,9 @@ export default function EditorContainer({
       <MdEditor
         initialDoc={doc}
         onChange={onDocChange}
-        isHeaderHidden={isHeaderHidden}
+        fullHeight={isHeaderHidden}
       />
-      <MdRenderer doc={doc} isHeaderHidden={isHeaderHidden} />
+      <MdRenderer doc={doc} fullHeight={isHeaderHidden} />
     </Wrapper>
   )
 }
