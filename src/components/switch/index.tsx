@@ -1,7 +1,6 @@
 import { SwitchThumb, Switch as SwitchRoot, Label, Container } from './styles'
 
 type Props = {
-  defaultChecked: boolean
   checked: boolean
   onCheckedChange: (checked: boolean) => void
   disabled?: boolean
@@ -13,7 +12,6 @@ type Props = {
 
 export default function Switch({
   checked,
-  defaultChecked,
   onCheckedChange,
   disabled,
   name,
@@ -26,7 +24,6 @@ export default function Switch({
       <Label>{label}</Label>
       <SwitchRoot
         checked={checked}
-        defaultChecked={defaultChecked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
         name={name}
