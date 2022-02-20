@@ -10,7 +10,8 @@ export const globalStyles = globalCss({
   },
   body: {
     fontFamily: '$roboto',
-    color: '$gray900',
+    backgroundColor: '$black',
+    color: '#fff',
     letterSpacing: '-0.035em',
   },
   code: {
