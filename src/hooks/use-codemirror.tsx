@@ -18,14 +18,17 @@ import { oneDark } from '@codemirror/theme-one-dark'
 const syntaxHighlighting = HighlightStyle.define([
   {
     tag: tags.heading1,
+    fontSize: '1.6rem',
     fontWeight: '500',
   },
   {
     tag: tags.heading2,
+    fontSize: '1.4rem',
     fontWeight: '500',
   },
   {
     tag: tags.heading3,
+    fontSize: '1.22rem',
     fontWeight: '500',
   },
 ])
