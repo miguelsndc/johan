@@ -8,17 +8,26 @@ import {
   getDoc,
   doc as getDocRef,
 } from 'firebase/firestore'
-import { Layout, MdEditorContainer } from '../../../components'
-import { firestore } from '../../../config/firebase'
-import { useAuth } from '../../../contexts/auth'
-import { styled, theme } from '../../../../stitches.config'
-import Spinner from '../../../components/spinner'
-import useMounted from '../../../hooks/use-mounted'
+import { Layout, MdEditorContainer } from '../../../../components'
+import { firestore } from '../../../../config/firebase'
+import { useAuth } from '../../../../contexts/auth'
+import { styled, theme } from '../../../../../stitches.config'
+import Spinner from '../../../../components/spinner'
+import useMounted from '../../../../hooks/use-mounted'
+
+type User = {
+  email: string | null
+  photoURL: string | null
+  uid: string
+  createdAt: string
+  firstName: string
+  lastName: string
+}
 
 type Draft = {
   id: string
   name: string
-  authorId: string
+  author: User
   createdAt: string
   content: string
 }
@@ -45,7 +54,7 @@ export default function CreateArticlePage() {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [doc, setDoc] = useState('')
   const [loading, setLoading] = useState(true)
-  const [isHeaderHidden, setIsHeaderHidden] = useState(false)
+  const [isHeaderHidden, setIsHeaderHidden] = useState(true)
   const { user } = useAuth()
   const mounted = useMounted()
   const router = useRouter()
@@ -72,10 +81,9 @@ export default function CreateArticlePage() {
     []
   )
 
-  const handleDocChange = useCallback(
-    async (newDoc: string) => setDoc(newDoc),
-    []
-  )
+  const handleDocChange = useCallback(async (newDoc: string) => {
+    setDoc(newDoc)
+  }, [])
 
   useEffect(() => {
     const setup = async () => {
@@ -93,10 +101,7 @@ export default function CreateArticlePage() {
       if (draftData) {
         setDraft(draftData)
         setDoc(draftData.content)
-
-        setTimeout(() => {
-          setLoading(false)
-        }, 1000)
+        setLoading(false)
       }
     }
 
@@ -117,6 +122,7 @@ export default function CreateArticlePage() {
             isHeaderHidden={isHeaderHidden}
             onPost={handlePostSubmit}
             onDocChange={handleDocChange}
+            editMode
           />
         ) : (
           <div aria-modal='true'>

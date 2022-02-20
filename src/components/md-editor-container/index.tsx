@@ -15,6 +15,7 @@ type Props = {
   onSave: (doc: string) => Promise<void>
   onPost: (doc: string) => Promise<void>
   onToggleHeaderVisibility: (current: boolean) => void
+  editMode?: boolean
   isHeaderHidden: boolean
 }
 
@@ -25,6 +26,7 @@ export default function EditorContainer({
   onSave,
   isHeaderHidden,
   onToggleHeaderVisibility,
+  editMode,
 }: Props) {
   return (
     <Wrapper>
@@ -40,7 +42,7 @@ export default function EditorContainer({
         onChange={onDocChange}
         fullHeight={isHeaderHidden}
       />
-      <MdRenderer doc={doc} fullHeight={isHeaderHidden} />
+      <MdRenderer doc={doc} fullHeight={isHeaderHidden} editMode={editMode} />
     </Wrapper>
   )
 }

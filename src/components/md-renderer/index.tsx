@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { unified } from 'unified'
 import gfm from 'remark-gfm'
 import parse from 'remark-parse'
@@ -11,6 +11,7 @@ import { Container } from './styles'
 import RemarkCode from '../remark-code'
 
 import 'github-markdown-css/github-markdown-dark.css'
+import useDebouncedValue from '../../hooks/use-debounced-value'
 
 // allow className attr inside code element
 const schema = {
@@ -23,30 +24,40 @@ const schema = {
 
 type Props = {
   doc: string
-  fullHeight: boolean
+  fullHeight?: boolean
+  editMode?: boolean
 }
 
-export default function MdRenderer({ doc, fullHeight }: Props) {
-  const md = unified()
-    .use(parse)
-    .use(remarkBreaks)
-    .use(gfm)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw)
-    .use(rehypeSanitize, schema)
-    .use(rehypeReact, {
-      createElement: React.createElement,
-      components: {
-        code: RemarkCode,
-      },
-    })
-    .processSync(doc).result as ReactNode
+export default function MdRenderer({ doc, fullHeight, editMode }: Props) {
+  const [md, setMd] = useState<ReactNode>()
+  const debouncedDoc = useDebouncedValue(doc, 500)
+
+  useEffect(() => {
+    const parsed = unified()
+      .use(parse)
+      .use(remarkBreaks)
+      .use(gfm)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeSanitize, schema)
+      .use(rehypeReact, {
+        createElement: React.createElement,
+        components: {
+          code: RemarkCode,
+        },
+      })
+      .processSync(debouncedDoc).result as ReactNode
+
+    setMd(parsed)
+  }, [debouncedDoc])
 
   return (
     <Container
       className='markdown-body'
       data-testid='renderer'
       fullHeight={fullHeight}
+      editMode={editMode}
+      fitted={editMode && !fullHeight}
     >
       {md}
     </Container>

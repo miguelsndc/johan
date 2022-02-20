@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Spinner from '../spinner'
 import Switch from '../switch'
-import { Container, PostButton, SaveButton } from './styles'
+import { Container, ControlButton } from './styles'
 
 type Props = {
   onSave: (doc: string) => Promise<void>
@@ -22,6 +24,8 @@ export default function ArticleControls({
     loading: false,
     error: false,
   })
+
+  const router = useRouter()
 
   const handleSave = () => {
     setSaving((prevState) => ({ ...prevState, loading: true }))
@@ -46,17 +50,21 @@ export default function ArticleControls({
       <Switch
         label='Hide header'
         checked={isHeaderHidden}
-        defaultChecked={false}
         onCheckedChange={onToggleHeaderVisibility}
       />
-      <SaveButton type='button' onClick={handleSave}>
+      <ControlButton type='button' onClick={handleSave}>
         {saving.loading && <Spinner color='#fff' size={18} />}
         {saving.error && 'Error'}
         {!Object.values(saving).some(Boolean) && 'save'}
-      </SaveButton>
-      <PostButton type='button' onClick={handlePost}>
+      </ControlButton>
+      <Link href={`${router.asPath}/preview`} passHref>
+        <ControlButton onClick={handlePost} size='fitChildren' as='a'>
+          preview
+        </ControlButton>
+      </Link>
+      <ControlButton type='button' onClick={handlePost} color='purple'>
         post
-      </PostButton>
+      </ControlButton>
     </Container>
   )
 }

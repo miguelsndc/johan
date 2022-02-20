@@ -38,10 +38,9 @@ export default function Layout({
     const newDraft = {
       id: `${draftName.trim().split(' ').join('-').toLowerCase()}-${uuid()}`,
       name: draftName,
-      authorId: user?.uid,
+      author: user,
       createdAt: new Date().toISOString(),
-      content: `# ${draftName.trim()} 
-Start writing here...`,
+      content: `# Start writing here...`,
     }
 
     await setDoc(

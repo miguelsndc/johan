@@ -1,6 +1,6 @@
 import { styled } from '../../../stitches.config'
 
-const ButtonDefaults = styled('button', {
+const ControlButton = styled('button', {
   all: 'unset',
   display: 'flex',
   alignItems: 'center',
@@ -18,19 +18,36 @@ const ButtonDefaults = styled('button', {
     outlineStyle: 'auto',
     outlineColor: '$purple400',
   },
-})
 
-const SaveButton = styled(ButtonDefaults, {
-  background: '$gray600',
-  '&:hover': {
-    background: '$gray700',
+  variants: {
+    color: {
+      gray: {
+        background: '$gray600',
+        '&:hover': {
+          background: '$gray700',
+        },
+      },
+      purple: {
+        background: '$purple700',
+        '&:hover': {
+          background: '$purple800',
+        },
+      },
+    },
+    size: {
+      fixed: {
+        width: '3.75rem',
+        height: '2.25rem',
+      },
+      fitChildren: {
+        padding: '0rem 0.65rem',
+      },
+    },
   },
-})
 
-const PostButton = styled(ButtonDefaults, {
-  background: '$purple700',
-  '&:hover': {
-    background: '$purple800',
+  defaultVariants: {
+    color: 'gray',
+    size: 'fixed',
   },
 })
 
@@ -43,4 +60,4 @@ const Container = styled('div', {
   transition: 'opacity 150ms',
 })
 
-export { Container, SaveButton, PostButton }
+export { Container, ControlButton }

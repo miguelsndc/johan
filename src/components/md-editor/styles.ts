@@ -8,6 +8,16 @@ export const Container = styled('div', {
     paddingLeft: '1.5rem',
   },
 
+  '.cm-scroller::-webkit-scrollbar, .cm-scroller::-webkit-scrollbar-track': {
+    background: 'transparent',
+    width: 10,
+  },
+  '.cm-scroller::-webkit-scrollbar-thumb': {
+    borderRadius: 8,
+    background: '$gray500',
+    height: 20,
+  },
+
   variants: {
     fullHeight: {
       true: {
