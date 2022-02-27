@@ -22,7 +22,8 @@ const StyledOverlay = styled(DialogPrimitive.Overlay, {
 })
 
 const StyledContent = styled(DialogPrimitive.Content, {
-  backgroundColor: 'white',
+  backgroundColor: '$gray800',
+  color: '#fff',
   borderRadius: 6,
   boxShadow:
     'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
@@ -38,7 +39,6 @@ const StyledContent = styled(DialogPrimitive.Content, {
     animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
   '&:focus': { outline: 'none' },
-  color: '$gray900',
 })
 
 const StyledTitle = styled(DialogPrimitive.Title, {
@@ -48,7 +48,7 @@ const StyledTitle = styled(DialogPrimitive.Title, {
 
 const StyledDescription = styled(DialogPrimitive.Description, {
   margin: '10px 0 18px',
-  color: '$gray500',
+  color: '$gray400',
   fontSize: 15,
   lineHeight: 1.5,
 })
@@ -61,15 +61,15 @@ const StyledClose = styled(DialogPrimitive.Close, {
   display: 'block',
   padding: '0.4rem',
   borderRadius: 6,
-  background: '$gray200',
+  background: '$gray600',
   fontSize: 0,
   cursor: 'pointer',
   transition: 'background .2s',
   '&:focus': {
-    outlineColor: '$gray600',
+    outlineColor: '$gray300',
   },
   '&:hover': {
-    background: '$gray300',
+    background: '$gray500',
   },
 })
 

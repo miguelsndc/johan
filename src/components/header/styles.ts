@@ -78,25 +78,26 @@ const ProfileDetails = styled('div', {
 const Separator = styled('hr', {
   border: 'none',
   height: 1,
-  background: '$gray100',
+  background: '$gray600',
   marginBottom: '0.5rem',
 })
 
 const ControlButton = styled('button', {
   border: 'none',
   fontFamily: 'inherit',
-  background: '#fff',
+  background: '$gray800',
   fontSize: '1rem',
   display: 'flex',
   width: '100%',
   alignItems: 'center',
   gap: '1rem',
+  color: '#fff',
   cursor: 'pointer',
   padding: '0.5rem 1rem',
   transition: 'background .2s',
 
   '&:hover': {
-    background: '$gray100',
+    background: '$gray700',
   },
 })
 
@@ -115,13 +116,16 @@ const slideUpAndFade = keyframes({
 const PopoverStyledContent = styled(PopoverPrimitive.Content, {
   borderRadius: 6,
   width: 260,
-  backgroundColor: 'white',
-  boxShadow: `0px 2px 12px ${theme.colors.gray500}`,
+  backgroundColor: '$gray800',
+  boxShadow: `0px 2px 12px ${theme.colors.gray600}`,
   '&[data-state="open"]': {
     animation: `${slideDownAndFade} 200ms ease-out`,
   },
   '&[data-state="closed"]': {
     animation: `${slideUpAndFade} 200ms ease-in`,
+  },
+  a: {
+    color: '$purple400',
   },
 })
 

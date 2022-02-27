@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { GrClose } from 'react-icons/gr'
+import { theme } from '../../../stitches.config'
 
 import {
   Dialog as DialogRoot,
@@ -36,7 +37,7 @@ export default function Dialog({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
           <DialogClose onClick={onClose}>
-            <GrClose size={16} />
+            <GrClose size={16} color={String(theme.colors.gray300)} />
           </DialogClose>
           <div>{children}</div>
         </DialogContent>

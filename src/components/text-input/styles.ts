@@ -2,12 +2,14 @@ import { styled } from '../../../stitches.config'
 
 export const Input = styled('input', {
   width: '100%',
-  border: '1px solid $gray300',
+  border: '1px solid $gray600',
   borderRadius: 6,
   padding: '0.75rem 0.5rem',
   fontSize: '1rem',
   fontFamily: '$roboto',
-  boxShadow: '0px 2px 12px #f4f4f5',
+  boxShadow: '0px 2px 12px #3f3f46',
+  background: '$gray600',
+  color: '#fff',
 
   '&:focus': {
     outlineColor: '$purple400',
@@ -22,7 +24,6 @@ export const Title = styled('span', {
 
 export const Field = styled('label', {
   display: 'block',
-  color: '$black',
 
   '& + &': {
     marginTop: '1rem',

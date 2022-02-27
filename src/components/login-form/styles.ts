@@ -3,10 +3,11 @@ import { styled } from '../../../stitches.config'
 export const Form = styled('form', {
   width: '100%',
   maxWidth: 520,
-  background: '#fff',
+  background: '$gray800',
   padding: '1.5rem',
   borderRadius: 6,
-  boxShadow: '0px 3px 12px #e4e4e7',
+  color: '#fff',
+  boxShadow: '0px 3px 12px #3f3f46',
 })
 
 export const Footer = styled('footer', {

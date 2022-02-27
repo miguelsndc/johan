@@ -69,7 +69,7 @@ export default function Header({
               <ControlButton type='button' onClick={onSignOut}>
                 <IoLogOutOutline
                   size={28}
-                  color={String(theme.colors.gray500)}
+                  color={String(theme.colors.gray400)}
                 />
                 Sign out
               </ControlButton>
