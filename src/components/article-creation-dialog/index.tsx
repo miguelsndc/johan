@@ -8,7 +8,6 @@ import { Footer } from './styles'
 
 type Props = {
   open: boolean
-  onClose: () => void
   onOpenChange: (open: boolean) => void
   onConfirm: (draftName: string) => Promise<void>
 }
@@ -22,7 +21,6 @@ const schema: yup.SchemaOf<FormData> = yup.object().shape({
 })
 
 export default function ArticleCreationDialog({
-  onClose,
   onOpenChange,
   open,
   onConfirm,
@@ -43,7 +41,7 @@ export default function ArticleCreationDialog({
 
   return (
     <Dialog
-      onClose={onClose}
+      onClose={() => onOpenChange(false)}
       onOpenChange={onOpenChange}
       open={open}
       title='So you want to create a new post ?'
@@ -70,7 +68,7 @@ export default function ArticleCreationDialog({
             color='secondary'
             arrangement='static'
             type='button'
-            onClick={onClose}
+            onClick={() => onOpenChange(false)}
           >
             Cancel
           </Button>
