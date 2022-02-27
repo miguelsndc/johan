@@ -35,13 +35,9 @@ export default function ArticleCreationDialog({
     handleBlur,
     handleSubmit,
     isSubmitting,
-    resetForm,
   } = useFormik({
     initialValues: { draftName: '' },
-    onSubmit: async (formValues) => {
-      await onConfirm(formValues.draftName)
-      resetForm()
-    },
+    onSubmit: async (formValues) => onConfirm(formValues.draftName),
     validationSchema: schema,
   })
 
