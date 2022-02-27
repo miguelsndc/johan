@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Spinner from '../spinner'
 import Switch from '../switch'
@@ -25,6 +24,11 @@ export default function ArticleControls({
     error: false,
   })
 
+  const [preview, setPreview] = useState({
+    loading: false,
+    error: false,
+  })
+
   const router = useRouter()
 
   const handleSave = () => {
@@ -43,6 +47,17 @@ export default function ArticleControls({
       })
   }
 
+  const handlePreview = () => {
+    setPreview((prevState) => ({ ...prevState, loading: true }))
+
+    onSave(doc)
+      .then(() => {
+        setPreview((prevState) => ({ ...prevState, loading: false }))
+        router.push(`${router.asPath}/preview`)
+      })
+      .catch(() => setPreview({ error: true, loading: false }))
+  }
+
   const handlePost = () => onPost(doc)
 
   return (
@@ -57,11 +72,13 @@ export default function ArticleControls({
         {saving.error && 'Error'}
         {!Object.values(saving).some(Boolean) && 'save'}
       </ControlButton>
-      <Link href={`${router.asPath}/preview`} passHref>
-        <ControlButton onClick={handlePost} size='fitChildren' as='a'>
-          preview
-        </ControlButton>
-      </Link>
+
+      <ControlButton size='fitChildren' onClick={handlePreview}>
+        {preview.loading && <Spinner color='#fff' size={18} />}
+        {preview.error && 'Error'}
+        {!Object.values(preview).some(Boolean) && 'Preview'}
+      </ControlButton>
+
       <ControlButton type='button' onClick={handlePost} color='purple'>
         post
       </ControlButton>
