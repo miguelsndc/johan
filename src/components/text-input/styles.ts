@@ -22,6 +22,7 @@ export const Title = styled('span', {
 
 export const Field = styled('label', {
   display: 'block',
+  color: '$black',
 
   '& + &': {
     marginTop: '1rem',
