@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { styled } from '../../../stitches.config'
 import { LoginForm } from '../../components'
 import { useAuth } from '../../contexts/auth'
@@ -12,10 +13,16 @@ const Container = styled('div', {
 
 export default function LoginPage() {
   const { signInWithEmailAndPassword } = useAuth()
+  const router = useRouter()
+
+  const handleSubmit = (values: any) =>
+    signInWithEmailAndPassword(values).then(() => {
+      router.push('/')
+    })
 
   return (
     <Container>
-      <LoginForm handleSubmit={signInWithEmailAndPassword} />
+      <LoginForm handleSubmit={handleSubmit} />
     </Container>
   )
 }
