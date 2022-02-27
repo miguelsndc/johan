@@ -19,16 +19,16 @@ export const globalStyles = globalCss({
   },
 
   html: {
-    fontSize: '87.5%',
+    fontSize: 14,
   },
 
   '@md': {
-    html: { fontSize: '93.75%' },
+    html: { fontSize: 15 },
   },
 
   '@lg': {
     html: {
-      fontSize: '100%',
+      fontSize: 16,
     },
   },
 })
