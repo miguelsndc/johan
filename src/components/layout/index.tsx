@@ -17,6 +17,10 @@ const DynamicArticleCreationDialog = dynamic(
   () => import('../article-creation-dialog')
 )
 
+const DynamicWarnUnsignedDialog = dynamic(
+  () => import('../warn-unsigned-dialog')
+)
+
 export default function Layout({
   children,
   isHeaderHidden = false,
@@ -24,13 +28,14 @@ export default function Layout({
   const { user, signOut } = useAuth()
   const [isArticleCreationDialogOpened, setIsArticleCreationDialogOpened] =
     useState(false)
+  const [isWarnUnsignedDialogOpened, setIsWarnUnsignedDialogOpened] =
+    useState(true)
   const router = useRouter()
 
-  const handleShowArticleCreationDialog = () =>
-    setIsArticleCreationDialogOpened(true)
-
-  const handleCloseArticleCreationDialog = () =>
-    setIsArticleCreationDialogOpened(false)
+  const handlePostCreationFlow = () => {
+    if (user) setIsArticleCreationDialogOpened(true)
+    else setIsWarnUnsignedDialogOpened(true)
+  }
 
   const handleCreatePost = async (draftName: string) => {
     if (!user) return
@@ -48,7 +53,7 @@ export default function Layout({
       newDraft
     )
 
-    handleCloseArticleCreationDialog()
+    setIsArticleCreationDialogOpened(false)
 
     router.push(`/article/edit/${newDraft.id}`)
   }
@@ -59,14 +64,17 @@ export default function Layout({
         <Header
           user={user}
           onSignOut={signOut}
-          onStartPostCreationFlow={handleShowArticleCreationDialog}
+          onStartPostCreationFlow={handlePostCreationFlow}
         />
       )}
       <DynamicArticleCreationDialog
         open={isArticleCreationDialogOpened}
-        onClose={handleCloseArticleCreationDialog}
         onOpenChange={setIsArticleCreationDialogOpened}
         onConfirm={handleCreatePost}
+      />
+      <DynamicWarnUnsignedDialog
+        onOpenChange={setIsWarnUnsignedDialogOpened}
+        open={isWarnUnsignedDialogOpened}
       />
       <main>{children}</main>
     </>
