@@ -29,7 +29,7 @@ export default function Layout({
   const [isArticleCreationDialogOpened, setIsArticleCreationDialogOpened] =
     useState(false)
   const [isWarnUnsignedDialogOpened, setIsWarnUnsignedDialogOpened] =
-    useState(true)
+    useState(false)
   const router = useRouter()
 
   const handlePostCreationFlow = () => {
@@ -38,8 +38,6 @@ export default function Layout({
   }
 
   const handleCreatePost = async (draftName: string) => {
-    if (!user) return
-
     const newDraft = {
       id: `${draftName.trim().split(' ').join('-').toLowerCase()}-${uuid()}`,
       name: draftName,
@@ -49,7 +47,7 @@ export default function Layout({
     }
 
     await setDoc(
-      doc(firestore, 'users', user.uid, 'drafts', newDraft.id),
+      doc(firestore, 'users', user!.uid, 'drafts', newDraft.id),
       newDraft
     )
 

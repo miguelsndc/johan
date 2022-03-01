@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { AiOutlineHome, AiOutlinePlus } from 'react-icons/ai'
 import { IoLogOutOutline } from 'react-icons/io5'
 import { theme } from '../../../stitches.config'
+import { User } from '../../types'
 
 import {
   RoundedButton,
@@ -15,15 +16,6 @@ import {
   ControlButton,
   Menu,
 } from './styles'
-
-type User = {
-  email: string | null
-  photoURL: string | null
-  uid: string
-  createdAt: string
-  firstName: string
-  lastName: string
-}
 
 type HeaderProps = {
   user: User | null
@@ -61,7 +53,7 @@ export default function Header({
                   height={48}
                 />
                 <div>
-                  <h1>Miguel Nogueira</h1>
+                  <h1>{user?.name}</h1>
                   <Link href='/'>See profile</Link>
                 </div>
               </ProfileDetails>

@@ -26,23 +26,14 @@ import {
 import { FirebaseError } from 'firebase/app'
 import toast from 'react-hot-toast'
 import { auth, firestore } from '../config/firebase'
+import { User } from '../types'
 
 type AuthProviderProps = {
   children: ReactNode
 }
 
-type User = {
-  email: string | null
-  photoURL: string | null
-  uid: string
-  createdAt: string
-  firstName: string
-  lastName: string
-}
-
 type RegisterWithEmailAndPasswordParams = {
-  firstName: string
-  lastName: string
+  name: string
   email: string
   password: string
 }
@@ -56,8 +47,7 @@ type AuthContextValue = {
   user: User | null
   registerWithEmailAndPassword({
     email,
-    firstName,
-    lastName,
+    name,
     password,
   }: RegisterWithEmailAndPasswordParams): Promise<void>
   signInWithEmailAndPassword({
@@ -73,17 +63,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
 
   const registerWithEmailAndPassword = useCallback(
-    async ({
-      email,
-      firstName,
-      lastName,
-      password,
-    }: RegisterWithEmailAndPasswordParams) => {
-      const getUserByFirstNameQuery = query(
+    async ({ email, name, password }: RegisterWithEmailAndPasswordParams) => {
+      const getUserByNameQuery = query(
         collection(firestore, 'users'),
-        where('firstName', '==', firstName)
+        where('name', '==', name)
       )
-      const querySnapshot = (await getDocs(getUserByFirstNameQuery)).docs[0]
+      const querySnapshot = (await getDocs(getUserByNameQuery)).docs[0]
 
       const firstMatched = querySnapshot.data() as User
 
@@ -131,8 +116,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email: credentials.user.email,
         uid: credentials.user.uid,
         photoURL: credentials.user.photoURL,
-        firstName,
-        lastName,
+        name,
         createdAt: new Date().toISOString(),
       }
 

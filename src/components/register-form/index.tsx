@@ -8,8 +8,7 @@ import { Form, Footer } from './styles'
 import Spinner from '../spinner'
 
 type FormData = {
-  firstName: string
-  lastName: string
+  name: string
   email: string
   password: string
 }
@@ -23,14 +22,10 @@ const formSchema: yup.SchemaOf<FormData> = yup.object().shape({
     .string()
     .email('Type a valid email.')
     .required('The email field is required.'),
-  firstName: yup
+  name: yup
     .string()
-    .min(3, 'First name field should be at least 3 characters long.')
-    .required('The first name field is required.'),
-  lastName: yup
-    .string()
-    .min(3, 'Last name field should be at least 3 characters long.')
-    .required('The last name field is required.'),
+    .min(3, 'Name field should be at least 3 characters long.')
+    .required('The name field is required.'),
   password: yup
     .string()
     .min(8, 'The password field should be at least 8 characters long.')
@@ -51,8 +46,7 @@ export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
   } = useFormik<FormData>({
     initialValues: {
       email: '',
-      firstName: '',
-      lastName: '',
+      name: '',
       password: '',
     },
     onSubmit: (formValues) => handleSubmit(formValues),
@@ -62,36 +56,19 @@ export default function RegisterForm({ handleSubmit }: RegisterFormProps) {
   return (
     <Form onSubmit={formikSubmitHandler} aria-label='form'>
       <TextInput
-        id='firstName'
+        id='name'
         type='text'
-        name='firstName'
-        label='First name'
-        aria-label='first name'
+        name='name'
+        label='Name'
+        aria-label='name'
         aria-required='true'
-        aria-invalid={!!errors.firstName}
-        value={values.firstName}
+        aria-invalid={!!errors.name}
+        value={values.name}
         autoComplete='given-name'
         onChange={handleChange}
         onBlur={handleBlur}
-        errorMessage={errors.firstName}
-        shouldShowErrorMessage={!!(touched.firstName && errors.firstName)}
-        required
-      />
-
-      <TextInput
-        id='lastName'
-        type='text'
-        name='lastName'
-        label='Last name'
-        value={values.lastName}
-        autoComplete='family-name'
-        aria-required='true'
-        aria-label='last name'
-        aria-invalid={!!errors.lastName}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        shouldShowErrorMessage={!!(touched.lastName && errors.lastName)}
-        errorMessage={errors.lastName}
+        errorMessage={errors.name}
+        shouldShowErrorMessage={!!(touched.name && errors.name)}
         required
       />
 

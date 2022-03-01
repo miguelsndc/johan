@@ -16,14 +16,12 @@ describe('components/register-form', () => {
   })
 
   it('should allow users to type into the fields and submit the form', async () => {
-    const firstNameField = screen.getByLabelText(/first name/i)
-    const lastNameField = screen.getByLabelText(/last name/i)
+    const nameField = screen.getByLabelText(/name/i)
     const emailField = screen.getByLabelText(/email/i)
     const passwordField = screen.getByLabelText(/password/i)
     const submitButton = screen.getByRole('button', { name: /submit/i })
 
-    user.type(firstNameField, 'john doe')
-    user.type(lastNameField, 'john doe')
+    user.type(nameField, 'john doe')
     user.type(emailField, 'john@email.com')
     user.type(passwordField, 'fakePassword123')
 
@@ -31,8 +29,7 @@ describe('components/register-form', () => {
 
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith({
-        firstName: 'john doe',
-        lastName: 'john doe',
+        name: 'john doe',
         email: 'john@email.com',
         password: 'fakePassword123',
       })
@@ -41,13 +38,11 @@ describe('components/register-form', () => {
 
   describe('with invalid inputs', () => {
     const setupInvalidInputs = () => {
-      const firstNameField = screen.getByLabelText(/first name/i)
-      const lastNameField = screen.getByLabelText(/last name/i)
+      const nameField = screen.getByLabelText(/name/i)
       const emailField = screen.getByLabelText(/email/i)
       const passwordField = screen.getByLabelText(/password/i)
 
-      user.type(firstNameField, 'gh')
-      user.type(lastNameField, 'gh')
+      user.type(nameField, 'gh')
       user.type(emailField, 'gh')
       user.type(passwordField, 'gh')
     }
@@ -61,8 +56,7 @@ describe('components/register-form', () => {
     it('should make the inputs invalid', async () => {
       setupInvalidInputs()
 
-      expect(await screen.findByLabelText(/first name/i)).toBeInvalid()
-      expect(await screen.findByLabelText(/last name/i)).toBeInvalid()
+      expect(await screen.findByLabelText(/name/i)).toBeInvalid()
       expect(await screen.findByLabelText(/email/i)).toBeInvalid()
       expect(await screen.findByLabelText(/password/i)).toBeInvalid()
     })

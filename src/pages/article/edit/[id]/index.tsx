@@ -14,15 +14,7 @@ import { useAuth } from '../../../../contexts/auth'
 import { styled, theme } from '../../../../../stitches.config'
 import Spinner from '../../../../components/spinner'
 import useMounted from '../../../../hooks/use-mounted'
-
-type User = {
-  email: string | null
-  photoURL: string | null
-  uid: string
-  createdAt: string
-  firstName: string
-  lastName: string
-}
+import { User } from '../../../../types'
 
 type Draft = {
   id: string
