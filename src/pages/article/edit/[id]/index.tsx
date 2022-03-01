@@ -118,7 +118,7 @@ export default function CreateArticlePage() {
           />
         ) : (
           <div aria-modal='true'>
-            {mounted &&
+            {mounted() &&
               createPortal(
                 <Overlay>
                   <Spinner size={64} color={String(theme.colors.gray300)} />
