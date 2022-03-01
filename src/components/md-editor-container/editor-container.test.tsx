@@ -4,6 +4,21 @@ import { useCallback, useState } from 'react'
 import MdEditorContainer from '.'
 import Layout from '../layout'
 
+// polyfill
+document.createRange = () => {
+  const range = new Range()
+
+  range.getBoundingClientRect = jest.fn()
+
+  range.getClientRects = () => ({
+    item: () => null,
+    length: 0,
+    [Symbol.iterator]: jest.fn(),
+  })
+
+  return range
+}
+
 function MockEditorContainer({
   initialDoc,
   onPost,
@@ -35,8 +50,10 @@ function MockEditorContainer({
 }
 
 describe('components/editor-container', () => {
-  const save = jest.fn()
-  const post = jest.fn()
+  const save = jest.fn(() => Promise.resolve())
+  const post = jest.fn(() => Promise.resolve())
+
+  jest.useFakeTimers()
 
   it('editor content should reflect in renderer', () => {
     render(
@@ -52,6 +69,8 @@ describe('components/editor-container', () => {
     const editor = screen.getByRole('textbox')
 
     user.type(editor, '# hello')
+
+    jest.runAllTimers()
 
     expect(editor).toHaveTextContent('# hello')
     expect(await screen.findByTestId('renderer')).toHaveTextContent('hello')
