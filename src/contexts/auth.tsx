@@ -28,22 +28,22 @@ import toast from 'react-hot-toast'
 import { auth, firestore } from '../config/firebase'
 import { User } from '../types'
 
-type AuthProviderProps = {
+export type AuthProviderProps = {
   children: ReactNode
 }
 
-type RegisterWithEmailAndPasswordParams = {
+export type RegisterWithEmailAndPasswordParams = {
   name: string
   email: string
   password: string
 }
 
-type SignInWithEmailAndPasswordParams = {
+export type SignInWithEmailAndPasswordParams = {
   email: string
   password: string
 }
 
-type AuthContextValue = {
+export type AuthContextValue = {
   user: User | null
   registerWithEmailAndPassword({
     email,
@@ -57,7 +57,7 @@ type AuthContextValue = {
   signOut: () => Promise<void>
 }
 
-const authContext = createContext({} as AuthContextValue)
+export const authContext = createContext({} as AuthContextValue)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
