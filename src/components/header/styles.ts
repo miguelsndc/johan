@@ -5,6 +5,7 @@ const Container = styled('header', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  padding: '0.75rem',
   width: '100%',
   height: '7vh',
   background: '$purple700',
@@ -24,6 +25,7 @@ const Container = styled('header', {
 
 const Menu = styled('div', {
   display: 'flex',
+  alignItems: 'center',
   gap: '1rem',
 })
 
@@ -101,6 +103,47 @@ const ControlButton = styled('button', {
   },
 })
 
+const LinkWrapper = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 10,
+})
+
+const LinkButton = styled('a', {
+  borderRadius: 6,
+  textDecoration: 'none',
+
+  width: 95,
+  height: 42,
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'background .2s',
+
+  variants: {
+    variant: {
+      outlined: {
+        border: '2px solid #fff',
+        color: '#fff',
+        borderStyle: 'inset',
+
+        '&:hover': {
+          background: '#fff',
+          color: '$purple800',
+        },
+      },
+      filled: {
+        background: '$purple400',
+        color: '#fff',
+
+        '&:hover': {
+          background: '$purple300',
+        },
+      },
+    },
+  },
+})
+
 // Radix
 
 const slideDownAndFade = keyframes({
@@ -162,4 +205,6 @@ export {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  LinkWrapper,
+  LinkButton,
 }
