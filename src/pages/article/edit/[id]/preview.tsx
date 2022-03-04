@@ -9,15 +9,7 @@ import MdRenderer from '../../../../components/md-renderer'
 import { firestore } from '../../../../config/firebase'
 import { useAuth } from '../../../../contexts/auth'
 import Spinner from '../../../../components/spinner'
-
-type User = {
-  email: string | null
-  photoURL: string | null
-  uid: string
-  createdAt: string
-  firstName: string
-  lastName: string
-}
+import { User } from '../../../../types'
 
 type Draft = {
   id: string
@@ -151,7 +143,7 @@ export default function PreviewArticlePage() {
               height={40}
             />
             <div>
-              <h2>{`${draft?.author.firstName} ${draft?.author.lastName}`}</h2>
+              <h2>{draft.author.name}</h2>
               <p>{draft?.author.createdAt}</p>
             </div>
           </Author>
