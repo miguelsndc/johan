@@ -55,18 +55,18 @@ describe('components/editor-container', () => {
 
   jest.useFakeTimers()
 
-  it('editor content should reflect in renderer', () => {
+  it('editor content should reflect in renderer', async () => {
     render(
       <MockEditorContainer initialDoc='# hello' onPost={post} onSave={save} />
     )
 
-    expect(screen.getByRole('textbox')).toHaveTextContent('# hello')
+    expect(await screen.findByRole('textbox')).toHaveTextContent('# hello')
     expect(screen.getByTestId('renderer')).toHaveTextContent('hello')
   })
 
   it('changes on editor should reflect in renderer', async () => {
     render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
-    const editor = screen.getByRole('textbox')
+    const editor = await screen.findByRole('textbox')
 
     user.type(editor, '# hello')
 
@@ -87,7 +87,7 @@ describe('components/editor-container', () => {
 
   it('should submit post on button click', () => {
     render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
-    const postBtn = screen.getByRole('button', { name: /post/i })
+    const postBtn = screen.getByRole('button', { name: 'post' })
 
     user.click(postBtn)
 

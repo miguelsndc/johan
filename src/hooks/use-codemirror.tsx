@@ -1,19 +1,8 @@
 import { useEffect, useState, useRef, MutableRefObject } from 'react'
 import { EditorState } from '@codemirror/state'
-import { EditorView, keymap, highlightActiveLine } from '@codemirror/view'
-import { defaultKeymap } from '@codemirror/commands'
-import { history, historyKeymap } from '@codemirror/history'
-import { indentOnInput } from '@codemirror/language'
-import { bracketMatching } from '@codemirror/matchbrackets'
-import { highlightActiveLineGutter } from '@codemirror/gutter'
-import {
-  defaultHighlightStyle,
-  HighlightStyle,
-  tags,
-} from '@codemirror/highlight'
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
-import { languages } from '@codemirror/language-data'
-import { oneDark } from '@codemirror/theme-one-dark'
+import { EditorView } from '@codemirror/view'
+
+import { HighlightStyle, tags } from '@codemirror/highlight'
 
 const syntaxHighlighting = HighlightStyle.define([
   {
@@ -48,38 +37,72 @@ function useCodeMirror<T extends Element>({
   useEffect(() => {
     if (!refContainer.current) return
 
-    const extensions = [
-      keymap.of([...defaultKeymap, ...historyKeymap]),
-      history(),
-      highlightActiveLineGutter(),
-      indentOnInput(),
-      bracketMatching(),
-      defaultHighlightStyle.fallback,
-      highlightActiveLine(),
-      markdown({
-        base: markdownLanguage,
-        codeLanguages: languages,
-        addKeymap: true,
-      }),
-      oneDark,
-      syntaxHighlighting,
-      EditorView.lineWrapping,
-      EditorView.updateListener.of((update) => {
-        if (update.changes) onChange(update.state)
-      }),
-    ]
+    async function setup() {
+      const [
+        keymap,
+        highlightActiveLine,
+        defaultKeymap,
+        history,
+        historyKeymap,
+        indentOnInput,
+        bracketMatching,
+        highlightActiveLineGutter,
+        languages,
+        markdownLanguage,
+        markdown,
+        oneDark,
+        defaultHighlightStyle,
+      ] = await Promise.all([
+        (await import('@codemirror/view')).keymap,
+        (await import('@codemirror/view')).highlightActiveLine,
+        (await import('@codemirror/commands')).defaultKeymap,
+        (await import('@codemirror/history')).history,
+        (await import('@codemirror/history')).historyKeymap,
+        (await import('@codemirror/language')).indentOnInput,
+        (await import('@codemirror/matchbrackets')).bracketMatching,
+        (await import('@codemirror/gutter')).highlightActiveLineGutter,
+        (await import('@codemirror/language-data')).languages,
+        (await import('@codemirror/lang-markdown')).markdownLanguage,
+        (await import('@codemirror/lang-markdown')).markdown,
+        (await import('@codemirror/theme-one-dark')).oneDark,
+        (await import('@codemirror/highlight')).defaultHighlightStyle,
+      ])
 
-    const initialState = EditorState.create({
-      doc: initialDoc,
-      extensions,
-    })
+      const extensions = [
+        keymap.of([...defaultKeymap, ...historyKeymap]),
+        history(),
+        highlightActiveLineGutter(),
+        indentOnInput(),
+        bracketMatching(),
+        defaultHighlightStyle.fallback,
+        highlightActiveLine(),
+        markdown({
+          base: markdownLanguage,
+          codeLanguages: languages,
+          addKeymap: true,
+        }),
+        oneDark,
+        syntaxHighlighting,
+        EditorView.lineWrapping,
+        EditorView.updateListener.of((update) => {
+          if (update.changes) onChange(update.state)
+        }),
+      ]
 
-    const view = new EditorView({
-      state: initialState,
-      parent: refContainer.current,
-    })
+      const initialState = EditorState.create({
+        doc: initialDoc,
+        extensions,
+      })
 
-    setEditorView(view)
+      const view = new EditorView({
+        state: initialState,
+        parent: refContainer.current!,
+      })
+
+      setEditorView(view)
+    }
+
+    setup()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refContainer, onChange])
 
