@@ -5,3 +5,11 @@ export type User = {
   createdAt: string
   name: string
 }
+
+export type Post = {
+  id: string
+  name: string
+  author: User
+  createdAt: string
+  content: string
+}
