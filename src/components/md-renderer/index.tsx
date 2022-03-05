@@ -26,11 +26,17 @@ type Props = {
   doc: string
   fullHeight?: boolean
   editMode?: boolean
+  disableDebounce?: boolean
 }
 
-export default function MdRenderer({ doc, fullHeight, editMode }: Props) {
+export default function MdRenderer({
+  doc,
+  fullHeight,
+  editMode,
+  disableDebounce,
+}: Props) {
   const [md, setMd] = useState<ReactNode>()
-  const debouncedDoc = useDebouncedValue(doc, 500)
+  const debouncedDoc = useDebouncedValue(doc, 500, disableDebounce)
 
   useEffect(() => {
     const parsed = unified()
