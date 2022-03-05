@@ -2,12 +2,15 @@ import Head from 'next/head'
 import { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { createPortal } from 'react-dom'
+import { v4 as uuid } from 'uuid'
 import {
   collection,
   updateDoc,
   getDoc,
-  doc as getDocRef,
+  doc as firestoreDoc,
+  setDoc as setFirestoreDoc,
 } from 'firebase/firestore'
+import { toKebabCase } from '../../../../helpers/to-kebab-case'
 import { Layout, MdEditorContainer } from '../../../../components'
 import { firestore } from '../../../../config/firebase'
 import { useAuth } from '../../../../contexts/auth'
@@ -61,7 +64,7 @@ export default function CreateArticlePage() {
         `users/${user?.uid}/drafts`
       )
 
-      const docRef = getDocRef(currentUserDraftsCollection, String(id))
+      const docRef = firestoreDoc(currentUserDraftsCollection, String(id))
 
       await updateDoc(docRef, newDraft)
     },
@@ -69,8 +72,25 @@ export default function CreateArticlePage() {
   )
 
   const handlePostSubmit = useCallback(
-    async (docSnapshot: string) => console.log(docSnapshot),
-    []
+    async (docSnapshot: string) => {
+      const postId = `${toKebabCase(draft!.name)}-${uuid()}`
+      const postsCollection = collection(firestore, 'posts')
+
+      const newPost = {
+        id: postId,
+        name: draft!.name,
+        author: user!,
+        createdAt: new Date().toISOString(),
+        content: docSnapshot,
+      }
+
+      const newPostRef = firestoreDoc(postsCollection, newPost.id)
+
+      await setFirestoreDoc(newPostRef, newPost)
+
+      router.push(`/article/${newPost.id}`)
+    },
+    [user, draft, router]
   )
 
   const handleDocChange = useCallback(async (newDoc: string) => {
@@ -84,7 +104,7 @@ export default function CreateArticlePage() {
         `users/${user?.uid}/drafts`
       )
 
-      const docRef = getDocRef(currentUserDraftsCollection, String(id))
+      const docRef = firestoreDoc(currentUserDraftsCollection, String(id))
 
       const docSnapshot = await getDoc(docRef)
 
