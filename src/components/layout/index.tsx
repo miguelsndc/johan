@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import Header from '../header'
-
+import { toKebabCase } from '../../helpers/to-kebab-case'
 import { useAuth } from '../../contexts/auth'
 import { firestore } from '../../config/firebase'
 
@@ -37,9 +37,9 @@ export default function Layout({
     else setIsWarnUnsignedDialogOpened(true)
   }
 
-  const handleCreatePost = async (draftName: string) => {
+  const handleCreateDraft = async (draftName: string) => {
     const newDraft = {
-      id: `${draftName.trim().split(' ').join('-').toLowerCase()}-${uuid()}`,
+      id: `${toKebabCase(draftName)}-${uuid()}`,
       name: draftName,
       author: user,
       createdAt: new Date().toISOString(),
@@ -68,7 +68,7 @@ export default function Layout({
       <DynamicArticleCreationDialog
         open={isArticleCreationDialogOpened}
         onOpenChange={setIsArticleCreationDialogOpened}
-        onConfirm={handleCreatePost}
+        onConfirm={handleCreateDraft}
       />
       <DynamicWarnUnsignedDialog
         onOpenChange={setIsWarnUnsignedDialogOpened}
