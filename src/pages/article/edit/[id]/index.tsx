@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { createPortal } from 'react-dom'
+
 import { v4 as uuid } from 'uuid'
 import {
   collection,
@@ -9,15 +9,15 @@ import {
   getDoc,
   doc as firestoreDoc,
   setDoc as setFirestoreDoc,
+  query,
+  where,
+  getDocs,
 } from 'firebase/firestore'
 import { toKebabCase } from '../../../../helpers/to-kebab-case'
 import { Layout, MdEditorContainer } from '../../../../components'
 import { firestore } from '../../../../config/firebase'
 import { useAuth } from '../../../../contexts/auth'
-import { styled, theme } from '../../../../../stitches.config'
-import Spinner from '../../../../components/spinner'
-import useMounted from '../../../../hooks/use-mounted'
-import { User } from '../../../../types'
+import { Post, User } from '../../../../types'
 
 type Draft = {
   id: string
@@ -27,31 +27,15 @@ type Draft = {
   content: string
 }
 
-const Overlay = styled('div', {
-  position: 'absolute',
-  inset: 0,
-  background: '$gray800',
-  opacity: 0.85,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-
-  p: {
-    color: '$gray300',
-    marginTop: '0.75rem',
-    fontFamily: '$mono',
-    fontSize: '1.25rem',
-  },
-})
-
 export default function CreateArticlePage() {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [doc, setDoc] = useState('')
   const [loading, setLoading] = useState(true)
+  const [alreadyExistingPost, setAlreadyExistingPost] = useState<Post | null>(
+    null
+  )
   const [isHeaderHidden, setIsHeaderHidden] = useState(true)
   const { user } = useAuth()
-  const mounted = useMounted()
   const router = useRouter()
   const { id } = router.query
 
@@ -73,13 +57,29 @@ export default function CreateArticlePage() {
 
   const handlePostSubmit = useCallback(
     async (docSnapshot: string) => {
-      const postId = `${toKebabCase(draft!.name)}-${uuid()}`
       const postsCollection = collection(firestore, 'posts')
+
+      if (alreadyExistingPost) {
+        const existingPostRef = firestoreDoc(
+          firestore,
+          'posts',
+          alreadyExistingPost.id
+        )
+
+        await updateDoc(existingPostRef, {
+          content: docSnapshot,
+        })
+
+        return alreadyExistingPost
+      }
+
+      const postId = `${toKebabCase(draft!.name)}-${uuid()}`
 
       const newPost = {
         id: postId,
         name: draft!.name,
         author: user!,
+        draftId: draft!.id,
         createdAt: new Date().toISOString(),
         content: docSnapshot,
       }
@@ -88,9 +88,9 @@ export default function CreateArticlePage() {
 
       await setFirestoreDoc(newPostRef, newPost)
 
-      router.push(`/article/${newPost.id}`)
+      return newPost
     },
-    [user, draft, router]
+    [user, draft, alreadyExistingPost]
   )
 
   const handleDocChange = useCallback(async (newDoc: string) => {
@@ -103,12 +103,26 @@ export default function CreateArticlePage() {
         firestore,
         `users/${user?.uid}/drafts`
       )
+      const postsCollection = collection(firestore, 'posts')
 
       const docRef = firestoreDoc(currentUserDraftsCollection, String(id))
 
       const docSnapshot = await getDoc(docRef)
 
       const draftData = docSnapshot.data() as Draft
+
+      const isAlreadyPostedQuery = query(
+        postsCollection,
+        where('draftId', '==', draftData!.id)
+      )
+
+      const existingPost = (
+        await getDocs(isAlreadyPostedQuery)
+      ).docs[0]?.data() as Post
+
+      if (existingPost) {
+        setAlreadyExistingPost(existingPost)
+      }
 
       if (draftData) {
         setDraft(draftData)
@@ -126,7 +140,7 @@ export default function CreateArticlePage() {
         <title>Johan | {draft?.name || 'Setting up...'}</title>
       </Head>
       <Layout isHeaderHidden={isHeaderHidden}>
-        {!loading ? (
+        {!loading && (
           <MdEditorContainer
             doc={doc}
             onSave={handleSave}
@@ -135,18 +149,8 @@ export default function CreateArticlePage() {
             onPost={handlePostSubmit}
             onDocChange={handleDocChange}
             editMode
+            alreadyExistingPost={!!alreadyExistingPost}
           />
-        ) : (
-          <div aria-modal='true'>
-            {mounted() &&
-              createPortal(
-                <Overlay>
-                  <Spinner size={64} color={String(theme.colors.gray300)} />
-                  <p>Getting everything up and running for you...</p>
-                </Overlay>,
-                document.body
-              )}
-          </div>
         )}
       </Layout>
     </>

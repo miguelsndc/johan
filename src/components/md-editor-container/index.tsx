@@ -2,6 +2,7 @@ import MdRenderer from '../md-renderer'
 import MdEditor from '../md-editor'
 import { styled } from '../../../stitches.config'
 import ArticleControls from '../article-controls'
+import type { Post } from '../../types'
 
 const Wrapper = styled('div', {
   display: 'flex',
@@ -13,10 +14,11 @@ type Props = {
   doc: string
   onDocChange: (newDoc: string) => void
   onSave: (doc: string) => Promise<void>
-  onPost: (doc: string) => Promise<void>
+  onPost: (doc: string) => Promise<Post>
   onToggleHeaderVisibility: (current: boolean) => void
   editMode?: boolean
   isHeaderHidden: boolean
+  alreadyExistingPost?: boolean
 }
 
 export default function EditorContainer({
@@ -27,6 +29,7 @@ export default function EditorContainer({
   isHeaderHidden,
   onToggleHeaderVisibility,
   editMode,
+  alreadyExistingPost,
 }: Props) {
   return (
     <Wrapper>
@@ -36,6 +39,7 @@ export default function EditorContainer({
         doc={doc}
         onToggleHeaderVisibility={onToggleHeaderVisibility}
         isHeaderHidden={isHeaderHidden}
+        alreadyExistingPost={alreadyExistingPost}
       />
       <MdEditor
         initialDoc={doc}
