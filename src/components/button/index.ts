@@ -26,9 +26,9 @@ const Button = styled('button', {
   variants: {
     color: {
       secondary: {
-        background: '$gray400',
+        background: '$gray500',
         '&:hover': {
-          background: '$gray500',
+          background: '$gray600',
         },
       },
       primary: {

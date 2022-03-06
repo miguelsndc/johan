@@ -7,7 +7,7 @@ const Container = styled('header', {
   justifyContent: 'center',
   padding: '0.75rem',
   width: '100%',
-  height: '7vh',
+  minHeight: '5vh',
   background: '$purple700',
 
   '& > div': {
@@ -19,6 +19,7 @@ const Container = styled('header', {
 
   h1: {
     fontFamily: '$mono',
+    fontSize: '1.75rem',
     color: '#fff',
   },
 })
