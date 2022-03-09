@@ -29,7 +29,7 @@ type Props = {
   disableDebounce?: boolean
 }
 
-export default function MdRenderer({
+export default function MarkdownRenderer({
   doc,
   fullHeight,
   editMode,

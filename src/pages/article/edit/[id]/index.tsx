@@ -14,7 +14,7 @@ import {
   getDocs,
 } from 'firebase/firestore'
 import { toKebabCase } from '../../../../helpers/to-kebab-case'
-import { Layout, MdEditorContainer } from '../../../../components'
+import { Layout, MarkdownEditorContainer } from '../../../../components'
 import { firestore } from '../../../../config/firebase'
 import { useAuth } from '../../../../contexts/auth'
 import { Post, User } from '../../../../types'
@@ -131,7 +131,7 @@ export default function CreateArticlePage() {
       }
     }
 
-    if (router.isReady) setup()
+    if (router.isReady && user) setup()
   }, [id, user, router.isReady])
 
   return (
@@ -141,15 +141,15 @@ export default function CreateArticlePage() {
       </Head>
       <Layout isHeaderHidden={isHeaderHidden}>
         {!loading && (
-          <MdEditorContainer
+          <MarkdownEditorContainer
             doc={doc}
             onSave={handleSave}
             onToggleHeaderVisibility={setIsHeaderHidden}
             isHeaderHidden={isHeaderHidden}
             onPost={handlePostSubmit}
             onDocChange={handleDocChange}
-            editMode
             alreadyExistingPost={!!alreadyExistingPost}
+            editMode
           />
         )}
       </Layout>

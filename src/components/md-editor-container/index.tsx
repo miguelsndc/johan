@@ -21,7 +21,7 @@ type Props = {
   alreadyExistingPost?: boolean
 }
 
-export default function EditorContainer({
+export default function MarkdownEditorContainer({
   doc,
   onDocChange,
   onPost,

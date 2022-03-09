@@ -5,8 +5,7 @@ import Image from 'next/image'
 import { firestore } from '../../config/firebase'
 import type { Post } from '../../types'
 import { styled } from '../../../stitches.config'
-import MdRenderer from '../../components/md-renderer'
-import { Layout } from '../../components'
+import { Layout, MarkdownRenderer } from '../../components'
 
 const REVALIDATE_INTERVAL_IN_SECONDS = 60 * 10
 
@@ -85,7 +84,7 @@ export default function ArticlePage({ post }: Props) {
             </div>
           </Author>
 
-          <MdRenderer doc={post.content} disableDebounce />
+          <MarkdownRenderer doc={post.content} disableDebounce />
         </Article>
       </Container>
     </Layout>

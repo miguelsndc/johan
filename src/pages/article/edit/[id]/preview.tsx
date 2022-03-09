@@ -4,11 +4,11 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { IoMdArrowBack } from 'react-icons/io'
+import { format } from 'date-fns'
 import { styled, theme } from '../../../../../stitches.config'
-import MdRenderer from '../../../../components/md-renderer'
 import { firestore } from '../../../../config/firebase'
 import { useAuth } from '../../../../contexts/auth'
-import Spinner from '../../../../components/spinner'
+import { Spinner, MarkdownRenderer } from '../../../../components'
 import { User } from '../../../../types'
 
 type Draft = {
@@ -153,7 +153,7 @@ export default function PreviewArticlePage() {
             </div>
           </Author>
 
-          {draft && <MdRenderer doc={draft.content} />}
+          <MarkdownRenderer doc={draft.content} />
         </Article>
       </Container>
     </>

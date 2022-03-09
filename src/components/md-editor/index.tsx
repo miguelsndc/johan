@@ -9,7 +9,11 @@ type Props = {
   fullHeight: boolean
 }
 
-export default function MdEditor({ initialDoc, onChange, fullHeight }: Props) {
+export default function MarkdownEditor({
+  initialDoc,
+  onChange,
+  fullHeight,
+}: Props) {
   const handleEditorChange = useCallback(
     (state: EditorState) => onChange(state.doc.toString()),
     [onChange]
