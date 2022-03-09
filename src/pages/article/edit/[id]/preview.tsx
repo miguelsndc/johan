@@ -110,7 +110,12 @@ export default function PreviewArticlePage() {
       const draftData = docSnapshot.data() as Draft
 
       if (draftData) {
-        setDraft(draftData)
+        const formattedDraft = {
+          ...draftData,
+          createdAt: format(new Date(draftData.createdAt), 'MMM d yyyy'),
+        }
+
+        setDraft(formattedDraft)
       }
     }
 
@@ -127,7 +132,7 @@ export default function PreviewArticlePage() {
   return (
     <>
       <Head>
-        <title>Johan | {draft?.name}</title>
+        <title>Preview | {draft?.name}</title>
       </Head>
 
       <Container>
@@ -144,7 +149,7 @@ export default function PreviewArticlePage() {
             />
             <div>
               <h2>{draft.author.name}</h2>
-              <p>{draft?.author.createdAt}</p>
+              <p>{draft.createdAt}</p>
             </div>
           </Author>
 
