@@ -7,7 +7,7 @@ export const Form = styled('form', {
   padding: '1.5rem',
   borderRadius: 6,
   color: '#fff',
-  boxShadow: '0px 3px 12px #3f3f46',
+  boxShadow: '0px 3px 12px #27272a',
 })
 
 export const Footer = styled('footer', {

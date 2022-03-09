@@ -7,6 +7,7 @@ import {
   useMemo,
   useEffect,
 } from 'react'
+import { useRouter } from 'next/router'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
@@ -61,6 +62,7 @@ export const authContext = createContext({} as AuthContextValue)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
+  const router = useRouter()
 
   const registerWithEmailAndPassword = useCallback(
     async ({ email, name, password }: RegisterWithEmailAndPasswordParams) => {
@@ -70,7 +72,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       )
       const querySnapshot = (await getDocs(getUserByNameQuery)).docs[0]
 
-      const firstMatched = querySnapshot.data() as User
+      const firstMatched = querySnapshot?.data() as User
 
       if (firstMatched) {
         toast.error(
@@ -125,8 +127,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await setDoc(newUserRef, newUser)
 
       setUser(newUser)
+
+      router.push('/')
     },
-    []
+    [router]
   )
 
   const signInWithEmailAndPassword = useCallback(
@@ -164,8 +168,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const userData = docSnapshot.data() as User
 
       setUser(userData)
+
+      router.push('/')
     },
-    []
+    [router]
   )
 
   const signOut = useCallback(() => firebaseSignOut(auth), [])
@@ -185,9 +191,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (persistedUser) {
         const userDoc = doc(firestore, `users/${persistedUser.uid}`)
 
-        getDoc(userDoc).then((docSnapshot) =>
+        getDoc(userDoc).then((docSnapshot) => {
           setUser(docSnapshot.data() as User)
-        )
+        })
       } else {
         setUser(null)
       }

@@ -7,8 +7,8 @@ export const Input = styled('input', {
   padding: '0.75rem 0.5rem',
   fontSize: '1rem',
   fontFamily: '$roboto',
-  boxShadow: '0px 2px 12px #3f3f46',
-  background: '$gray600',
+  boxShadow: '0px 2px 12px #27272a',
+  background: '$gray700',
   color: '#fff',
 
   '&:focus': {
