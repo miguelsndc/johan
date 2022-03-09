@@ -35,9 +35,11 @@ export default function Header({
       <div>
         <h1>Johan</h1>
         <Menu>
-          <RoundedButton>
-            <AiOutlineHome size={24} color='#fff' />
-          </RoundedButton>
+          <Link href='/' passHref>
+            <RoundedButton as='a'>
+              <AiOutlineHome size={24} color='#fff' />
+            </RoundedButton>
+          </Link>
 
           <RoundedButton
             onClick={onStartPostCreationFlow}

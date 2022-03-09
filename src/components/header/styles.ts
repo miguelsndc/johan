@@ -40,6 +40,10 @@ const RoundedButton = styled('button', {
   fontSize: '0',
   transition: 'background .3s',
 
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
   '&:hover': {
     background: '$purple400',
   },
@@ -126,7 +130,6 @@ const LinkButton = styled('a', {
       outlined: {
         border: '2px solid #fff',
         color: '#fff',
-        borderStyle: 'inset',
 
         '&:hover': {
           background: '#fff',
