@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import user from '@testing-library/user-event'
 import { useCallback, useState } from 'react'
 import MdEditorContainer from '.'
+import { Post } from '../../types'
 import Layout from '../layout'
 
 // polyfill
@@ -26,7 +27,7 @@ function MockEditorContainer({
 }: {
   initialDoc: string
   onSave: () => Promise<void>
-  onPost: () => Promise<void>
+  onPost: () => Promise<Post>
 }) {
   const [doc, setDoc] = useState(initialDoc)
   const [isHeaderHidden, setIsHeaderHidden] = useState(false)
@@ -51,7 +52,7 @@ function MockEditorContainer({
 
 describe('components/editor-container', () => {
   const save = jest.fn(() => Promise.resolve())
-  const post = jest.fn(() => Promise.resolve())
+  const post = jest.fn(() => Promise.resolve({} as Post))
 
   jest.useFakeTimers()
 
