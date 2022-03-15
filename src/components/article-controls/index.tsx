@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { BsThreeDotsVertical, BsXLg } from 'react-icons/bs'
 import Spinner from '../spinner'
 import Switch from '../switch'
 import { Container, ControlButton } from './styles'
@@ -34,7 +35,12 @@ export default function ArticleControls({
     error: false,
   })
 
+  const [areControlsHidden, setAreControlsHidden] = useState(false)
+
   const router = useRouter()
+
+  const handleToggleControlsVisibility = () =>
+    setAreControlsHidden((prevState) => !prevState)
 
   const handleSave = () => {
     setSaving((prevState) => ({ ...prevState, loading: true }))
@@ -107,30 +113,44 @@ export default function ArticleControls({
 
   return (
     <Container role='menubar'>
-      <Switch
-        label='Hide header'
-        checked={isHeaderHidden}
-        onCheckedChange={onToggleHeaderVisibility}
-      />
-      <ControlButton type='button' onClick={handleSave}>
-        {saving.loading && <Spinner color='#fff' size={18} />}
-        {saving.error && 'Error'}
-        {!Object.values(saving).some(Boolean) && 'save'}
-      </ControlButton>
+      {areControlsHidden || (
+        <div data-testid="controls-container">
+          <Switch
+            label='Hide header'
+            checked={isHeaderHidden}
+            onCheckedChange={onToggleHeaderVisibility}
+          />
+          <ControlButton type='button' onClick={handleSave}>
+            {saving.loading && <Spinner color='#fff' size={18} />}
+            {saving.error && 'Error'}
+            {!Object.values(saving).some(Boolean) && 'save'}
+          </ControlButton>
 
-      <ControlButton size='fitChildren' onClick={handlePreview}>
-        {preview.loading && <Spinner color='#fff' size={18} />}
-        {preview.error && 'Error'}
-        {!Object.values(preview).some(Boolean) && 'Preview'}
-      </ControlButton>
+          <ControlButton size='fitChildren' onClick={handlePreview}>
+            {preview.loading && <Spinner color='#fff' size={18} />}
+            {preview.error && 'Error'}
+            {!Object.values(preview).some(Boolean) && 'Preview'}
+          </ControlButton>
+
+          <ControlButton
+            type='button'
+            onClick={handlePost}
+            color='purple'
+            size={alreadyExistingPost ? 'fitChildren' : 'fixed'}
+          >
+            {alreadyExistingPost ? 'update' : 'post'}
+          </ControlButton>
+        </div>
+      )}
 
       <ControlButton
         type='button'
-        onClick={handlePost}
-        color='purple'
-        size={alreadyExistingPost ? 'fitChildren' : 'fixed'}
+        onClick={handleToggleControlsVisibility}
+        color='gray'
+        size='rounded'
+        aria-label='toggle controls visibility'
       >
-        {alreadyExistingPost ? 'update' : 'post'}
+        {areControlsHidden ? <BsThreeDotsVertical /> : <BsXLg />}
       </ControlButton>
     </Container>
   )

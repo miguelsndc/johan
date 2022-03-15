@@ -22,9 +22,9 @@ const ControlButton = styled('button', {
   variants: {
     color: {
       gray: {
-        background: '$gray600',
+        background: '$gray700',
         '&:hover': {
-          background: '$gray700',
+          background: '$gray600',
         },
       },
       purple: {
@@ -41,6 +41,11 @@ const ControlButton = styled('button', {
       },
       fitChildren: {
         padding: '0rem 0.65rem',
+      },
+      rounded: {
+        width: '2.25rem',
+        height: '2.25rem',
+        borderRadius: '50%',
       },
     },
   },
