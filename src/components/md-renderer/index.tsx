@@ -36,7 +36,7 @@ export default function MarkdownRenderer({
   disableDebounce,
 }: Props) {
   const [md, setMd] = useState<ReactNode>()
-  const debouncedDoc = useDebouncedValue(doc, 500, disableDebounce)
+  const debouncedDoc = useDebouncedValue(doc, 350, disableDebounce)
 
   useEffect(() => {
     const parsed = unified()
