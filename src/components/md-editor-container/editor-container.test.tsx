@@ -77,24 +77,6 @@ describe('components/editor-container', () => {
     expect(await screen.findByTestId('renderer')).toHaveTextContent('hello')
   })
 
-  it('should save post on button click', () => {
-    render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
-    const saveBtn = screen.getByRole('button', { name: /save/i })
-
-    user.click(saveBtn)
-
-    expect(save).toHaveBeenCalled()
-  })
-
-  it('should submit post on button click', () => {
-    render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
-    const postBtn = screen.getByRole('button', { name: 'post' })
-
-    user.click(postBtn)
-
-    expect(post).toHaveBeenCalled()
-  })
-
   it('should remove header when zen mode is enabled', async () => {
     render(<MockEditorContainer initialDoc='' onPost={post} onSave={save} />)
     const switchButton = screen.getByRole('switch', {
