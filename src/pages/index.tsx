@@ -1,7 +1,7 @@
 import { collection, getDocs } from 'firebase/firestore'
 import { GetServerSideProps } from 'next'
 import { format } from 'date-fns'
-import { Layout, PostPreview } from '../components'
+import { Layout, PostList } from '../components'
 import { firestore } from '../config/firebase'
 import { Post } from '../types'
 
@@ -13,9 +13,7 @@ function Home({ posts }: Props) {
   return (
     <Layout>
       <div>
-        {posts.map((post) => (
-          <PostPreview key={post.id} post={post} />
-        ))}
+        <PostList posts={posts} />
       </div>
     </Layout>
   )
