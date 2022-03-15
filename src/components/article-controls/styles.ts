@@ -60,9 +60,11 @@ const Container = styled('div', {
   position: 'absolute',
   top: 20,
   right: 40,
-  display: 'flex',
-  gap: '1rem',
-  transition: 'opacity 150ms',
+
+  '&, & > div': {
+    display: 'flex',
+    gap: '1rem',
+  },
 })
 
 export { Container, ControlButton }
