@@ -7,6 +7,7 @@ import Header from '../header'
 import { toKebabCase } from '../../helpers/to-kebab-case'
 import { useAuth } from '../../contexts/auth'
 import { firestore } from '../../config/firebase'
+import type { NewDraftData } from '../article-creation-dialog'
 
 type LayoutProps = {
   children: ReactNode
@@ -37,13 +38,14 @@ export default function Layout({
     else setIsWarnUnsignedDialogOpened(true)
   }
 
-  const handleCreateDraft = async (draftName: string) => {
+  const handleCreateDraft = async ({ name, description }: NewDraftData) => {
     const newDraft = {
-      id: `${toKebabCase(draftName)}-${uuid()}`,
-      name: draftName,
+      id: `${toKebabCase(name)}-${uuid()}`,
+      name,
+      description,
       author: user,
       createdAt: new Date().toISOString(),
-      content: `# Start writing here...`,
+      content: `Start writing here...`,
     }
 
     await setDoc(
@@ -58,7 +60,7 @@ export default function Layout({
 
   return (
     <>
-      {!isHeaderHidden && (
+      {isHeaderHidden || (
         <Header
           user={user}
           onSignOut={signOut}

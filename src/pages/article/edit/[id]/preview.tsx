@@ -17,6 +17,7 @@ type Draft = {
   author: User
   createdAt: string
   content: string
+  description: string | null
 }
 
 const Article = styled('article', {

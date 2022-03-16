@@ -24,6 +24,7 @@ type Draft = {
   name: string
   author: User
   createdAt: string
+  description?: string
   content: string
 }
 
@@ -78,6 +79,7 @@ export default function CreateArticlePage() {
       const newPost = {
         id: postId,
         name: draft!.name,
+        description: draft?.description ?? null,
         author: user!,
         draftId: draft!.id,
         createdAt: new Date().toISOString(),
