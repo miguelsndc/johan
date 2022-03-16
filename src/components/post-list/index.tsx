@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { PostContainer, AuthorInformation, Container } from './styles'
 import { Post } from '../../types/index'
 
@@ -11,7 +12,9 @@ export default function PostList({ posts }: Props) {
     <Container>
       {posts.map((post) => (
         <PostContainer key={post.id}>
-          <h1>{post.name}</h1>
+          <h1>
+            <Link href={`/article/${post.id}`}>{post.name}</Link>
+          </h1>
           <p>{post.content.substring(0, 100)}</p>
           <AuthorInformation>
             <Image

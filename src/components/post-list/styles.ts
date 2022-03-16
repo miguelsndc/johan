@@ -2,8 +2,10 @@ import { styled } from '../../../stitches.config'
 
 export const Container = styled('section', {
   display: 'grid',
-  maxWidth: 1050,
+  maxWidth: 1100,
+  marginTop: '1rem',
   marginInline: 'auto',
+  justifyItems: 'center',
   width: '100%',
   gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
   rowGap: 30,
@@ -16,6 +18,13 @@ export const PostContainer = styled('div', {
     fontWeight: 500,
     lineHeight: 1,
     letterSpacing: '0.035em',
+    a: {
+      color: '$gray50',
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
   },
   p: {
     color: '$gray400',
