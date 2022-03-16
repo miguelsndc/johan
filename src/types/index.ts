@@ -9,6 +9,7 @@ export type User = {
 export type Post = {
   id: string
   name: string
+  description?: string
   author: User
   createdAt: string
   content: string

@@ -62,7 +62,7 @@ export default function Header({
                   />
                   <div>
                     <h1>{user?.name}</h1>
-                    <Link href='/'>See profile</Link>
+                    <Link href={`/u/${user.name}`}>See profile</Link>
                   </div>
                 </ProfileDetails>
                 <Separator />

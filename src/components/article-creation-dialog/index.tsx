@@ -6,18 +6,23 @@ import Spinner from '../spinner'
 import TextInput from '../text-input'
 import { Footer } from './styles'
 
+export type NewDraftData = {
+  name: string
+  description?: string
+}
+
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onConfirm: (draftName: string) => Promise<void>
+  onConfirm: (draft: NewDraftData) => Promise<void>
 }
 
-type FormData = {
-  draftName: string
-}
-
-const schema: yup.SchemaOf<FormData> = yup.object().shape({
-  draftName: yup.string().required('A name is required to start working.'),
+const schema: yup.SchemaOf<NewDraftData> = yup.object().shape({
+  name: yup.string().required('A name is required to start working.'),
+  description: yup
+    .string()
+    .max(150, "A description shouldn't be more than 150 characters long.")
+    .optional(),
 })
 
 export default function ArticleCreationDialog({
@@ -34,8 +39,8 @@ export default function ArticleCreationDialog({
     handleSubmit,
     isSubmitting,
   } = useFormik({
-    initialValues: { draftName: '' },
-    onSubmit: async (formValues) => onConfirm(formValues.draftName),
+    initialValues: { name: '', description: '' },
+    onSubmit: async (formValues) => onConfirm(formValues),
     validationSchema: schema,
   })
 
@@ -45,23 +50,36 @@ export default function ArticleCreationDialog({
       onOpenChange={onOpenChange}
       open={open}
       title='So you want to create a new post ?'
-      description='Name your draft to start working'
+      description='Name your draft to start working. Try adding a tiny description so the final result looks prettier'
     >
       <form onSubmit={handleSubmit}>
         <TextInput
-          label='Draft name'
-          errorMessage={errors.draftName}
-          id='draftName'
+          label='Name:'
+          errorMessage={errors.name}
+          id='name'
           type='text'
-          name='draftName'
-          value={values.draftName}
-          aria-label='draftName'
+          name='name'
+          value={values.name}
+          aria-label='name'
           aria-required='true'
-          aria-invalid={!!errors.draftName}
+          aria-invalid={!!errors.name}
           onChange={handleChange}
-          shouldShowErrorMessage={!!(touched.draftName && errors.draftName)}
+          shouldShowErrorMessage={!!(touched.name && errors.name)}
           onBlur={handleBlur}
           required
+        />
+        <TextInput
+          label='Description:'
+          errorMessage={errors.description}
+          id='description'
+          type='text'
+          name='description'
+          value={values.description}
+          aria-label='description'
+          aria-invalid={!!errors.description}
+          onChange={handleChange}
+          shouldShowErrorMessage={!!(touched.description && errors.description)}
+          onBlur={handleBlur}
         />
         <Footer>
           <Button
