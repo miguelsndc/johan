@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { BsThreeDotsVertical, BsXLg } from 'react-icons/bs'
 import Spinner from '../spinner'
 import Switch from '../switch'
@@ -30,13 +30,7 @@ export default function ArticleControls({
     error: false,
   })
 
-  const [preview, setPreview] = useState({
-    loading: false,
-    error: false,
-  })
-
   const [areControlsHidden, setAreControlsHidden] = useState(false)
-
   const router = useRouter()
 
   const handleToggleControlsVisibility = () =>
@@ -56,17 +50,6 @@ export default function ArticleControls({
         setSaving({ loading: false, error: true })
         setTimeout(() => setSaving({ loading: false, error: false }), 5000)
       })
-  }
-
-  const handlePreview = () => {
-    setPreview((prevState) => ({ ...prevState, loading: true }))
-
-    onSave(doc)
-      .then(() => {
-        setPreview((prevState) => ({ ...prevState, loading: false }))
-        router.push(`${router.asPath}/preview`)
-      })
-      .catch(() => setPreview({ error: true, loading: false }))
   }
 
   const handlePost = () => {
@@ -114,7 +97,7 @@ export default function ArticleControls({
   return (
     <Container role='menubar'>
       {areControlsHidden || (
-        <div data-testid="controls-container">
+        <div data-testid='controls-container'>
           <Switch
             label='Hide header'
             checked={isHeaderHidden}
@@ -126,11 +109,11 @@ export default function ArticleControls({
             {!Object.values(saving).some(Boolean) && 'save'}
           </ControlButton>
 
-          <ControlButton size='fitChildren' onClick={handlePreview}>
-            {preview.loading && <Spinner color='#fff' size={18} />}
-            {preview.error && 'Error'}
-            {!Object.values(preview).some(Boolean) && 'Preview'}
-          </ControlButton>
+          <Link href={`${router.asPath}/preview`} passHref>
+            <ControlButton size='fitChildren' as='a'>
+              Preview
+            </ControlButton>
+          </Link>
 
           <ControlButton
             type='button'
