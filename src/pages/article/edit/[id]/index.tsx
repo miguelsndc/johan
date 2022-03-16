@@ -6,7 +6,6 @@ import { useEditor } from '../../../../contexts/editor'
 export default function CreateArticlePage() {
   const {
     alreadyExistingPost,
-    doc,
     draft,
     handleDocChange,
     handlePostSubmit,
@@ -23,7 +22,7 @@ export default function CreateArticlePage() {
       <Layout isHeaderHidden={isHeaderHidden}>
         {loading || (
           <MarkdownEditorContainer
-            doc={doc}
+            doc={draft!.content}
             onSave={handleSave}
             onToggleHeaderVisibility={setIsHeaderHidden}
             isHeaderHidden={isHeaderHidden}

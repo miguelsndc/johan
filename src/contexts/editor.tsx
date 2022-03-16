@@ -39,7 +39,6 @@ type Draft = {
 
 type ContextValue = {
   draft: Draft | null
-  doc: string
   loading: boolean
   alreadyExistingPost: Post | null
   handleSave: (docSnapshot: string) => Promise<void>
@@ -50,8 +49,7 @@ type ContextValue = {
 export const editorContext = createContext({} as ContextValue)
 
 export function EditorProvider({ children }: ProviderProps) {
-  const [draft, setDraft] = useState<Draft | null>(null)
-  const [doc, setDoc] = useState('')
+  const [draft, setDraft] = useState<Draft | null>({ content: '' } as Draft)
   const [loading, setLoading] = useState(true)
   const [alreadyExistingPost, setAlreadyExistingPost] = useState<Post | null>(
     null
@@ -117,7 +115,7 @@ export function EditorProvider({ children }: ProviderProps) {
   )
 
   const handleDocChange = useCallback(async (newDoc: string) => {
-    setDoc(newDoc)
+    setDraft((prevState) => ({ ...prevState!, content: newDoc }))
   }, [])
 
   useEffect(() => {
@@ -149,7 +147,6 @@ export function EditorProvider({ children }: ProviderProps) {
 
       if (draftData) {
         setDraft(draftData)
-        setDoc(draftData.content)
         setLoading(false)
       }
     }
@@ -160,7 +157,7 @@ export function EditorProvider({ children }: ProviderProps) {
   const memoized = useMemo(
     () => ({
       draft,
-      doc,
+
       loading,
       alreadyExistingPost,
       handleSave,
@@ -169,7 +166,7 @@ export function EditorProvider({ children }: ProviderProps) {
     }),
     [
       alreadyExistingPost,
-      doc,
+
       draft,
       handleDocChange,
       handlePostSubmit,

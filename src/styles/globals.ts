@@ -11,7 +11,7 @@ export const globalStyles = globalCss({
   body: {
     fontFamily: '$roboto',
     backgroundColor: '$black',
-    color: '#fff',
+    color: '$gray50',
     letterSpacing: '-0.035em',
   },
   code: {
