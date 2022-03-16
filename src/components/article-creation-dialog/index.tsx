@@ -21,7 +21,7 @@ const schema: yup.SchemaOf<NewDraftData> = yup.object().shape({
   name: yup.string().required('A name is required to start working.'),
   description: yup
     .string()
-    .max(150, "A description shouldn't be more than 150 characters long.")
+    .max(300, "A description shouldn't be more than 300 characters long.")
     .optional(),
 })
 
