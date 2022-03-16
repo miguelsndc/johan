@@ -1,24 +1,11 @@
-import { collection, doc, getDoc } from 'firebase/firestore'
 import Image from 'next/image'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { IoMdArrowBack } from 'react-icons/io'
 import { format } from 'date-fns'
 import { styled, theme } from '../../../../../stitches.config'
-import { firestore } from '../../../../config/firebase'
-import { useAuth } from '../../../../contexts/auth'
+import { useEditor } from '../../../../contexts/editor'
 import { Spinner, MarkdownRenderer } from '../../../../components'
-import { User } from '../../../../types'
-
-type Draft = {
-  id: string
-  name: string
-  author: User
-  createdAt: string
-  content: string
-  description: string | null
-}
 
 const Article = styled('article', {
   width: 'min(100% - 2rem, 50rem)',
@@ -31,6 +18,11 @@ const Article = styled('article', {
     fontFamily: '$mono',
     lineHeight: 1,
     paddingTop: '8rem',
+  },
+
+  '& > p': {
+    marginTop: '0.75rem',
+    color: '$gray400',
   },
 })
 
@@ -92,36 +84,12 @@ const Author = styled('div', {
 
 export default function PreviewArticlePage() {
   const router = useRouter()
-  const [draft, setDraft] = useState<Draft | null>(null)
-  const { user } = useAuth()
+  const { draft } = useEditor()
 
-  const { id } = router.query
-
-  useEffect(() => {
-    const setup = async () => {
-      const currentUserDraftsCollection = collection(
-        firestore,
-        `users/${user?.uid}/drafts`
-      )
-
-      const docRef = doc(currentUserDraftsCollection, String(id))
-
-      const docSnapshot = await getDoc(docRef)
-
-      const draftData = docSnapshot.data() as Draft
-
-      if (draftData) {
-        const formattedDraft = {
-          ...draftData,
-          createdAt: format(new Date(draftData.createdAt), 'MMM d yyyy'),
-        }
-
-        setDraft(formattedDraft)
-      }
-    }
-
-    if (router.isReady) setup()
-  }, [id, user, router.isReady])
+  const formattedDraft = {
+    ...draft!,
+    createdAt: format(new Date(draft!.createdAt), 'MMM d yyyy'),
+  }
 
   if (!draft)
     return (
@@ -133,7 +101,7 @@ export default function PreviewArticlePage() {
   return (
     <>
       <Head>
-        <title>Preview | {draft?.name}</title>
+        <title>Preview | {formattedDraft?.name}</title>
       </Head>
 
       <Container>
@@ -141,20 +109,21 @@ export default function PreviewArticlePage() {
           <IoMdArrowBack size={24} />
         </GoBackBtn>
         <Article>
-          <h1>{draft?.name}</h1>
+          <h1>{formattedDraft?.name}</h1>
+          <p>{formattedDraft?.description}</p>
           <Author>
             <Image
-              src={draft?.author.photoURL || '/default-user.png'}
+              src={formattedDraft?.author.photoURL || '/default-user.png'}
               width={40}
               height={40}
             />
             <div>
-              <h2>{draft.author.name}</h2>
-              <p>{draft.createdAt}</p>
+              <h2>{formattedDraft.author.name}</h2>
+              <p>{formattedDraft.createdAt}</p>
             </div>
           </Author>
 
-          <MarkdownRenderer doc={draft.content} />
+          <MarkdownRenderer doc={formattedDraft.content} />
         </Article>
       </Container>
     </>

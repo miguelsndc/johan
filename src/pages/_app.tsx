@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { Toaster } from 'react-hot-toast'
 import { globalStyles } from '../styles/globals'
 import { AuthProvider } from '../contexts/auth'
+import { EditorProvider } from '../contexts/editor'
 
 import '../config/firebase'
 
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Toaster />
       <AuthProvider>
-        <Component {...pageProps} />
+        <EditorProvider>
+          <Component {...pageProps} />
+        </EditorProvider>
       </AuthProvider>
     </>
   )
