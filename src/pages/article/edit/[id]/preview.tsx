@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Head from 'next/head'
+import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import { IoMdArrowBack } from 'react-icons/io'
-import { format } from 'date-fns'
 import { styled, theme } from '../../../../../stitches.config'
 import { useEditor } from '../../../../contexts/editor'
 import { Spinner, MarkdownRenderer } from '../../../../components'
@@ -68,7 +68,7 @@ const Author = styled('div', {
   display: 'flex',
   alignItems: 'center',
   gap: '0.75rem',
-  margin: '2.5rem 0',
+  margin: '1rem 0 2rem 0',
   img: {
     borderRadius: '50%',
   },
@@ -84,14 +84,9 @@ const Author = styled('div', {
 
 export default function PreviewArticlePage() {
   const router = useRouter()
-  const { draft } = useEditor()
+  const { draft, loading } = useEditor()
 
-  const formattedDraft = {
-    ...draft!,
-    createdAt: format(new Date(draft!.createdAt), 'MMM d yyyy'),
-  }
-
-  if (!draft)
+  if (loading)
     return (
       <Container loading>
         <Spinner color={String(theme.colors.gray400)} size={48} />
@@ -101,7 +96,7 @@ export default function PreviewArticlePage() {
   return (
     <>
       <Head>
-        <title>Preview | {formattedDraft?.name}</title>
+        <title>Preview | {draft?.name}</title>
       </Head>
 
       <Container>
@@ -109,21 +104,24 @@ export default function PreviewArticlePage() {
           <IoMdArrowBack size={24} />
         </GoBackBtn>
         <Article>
-          <h1>{formattedDraft?.name}</h1>
-          <p>{formattedDraft?.description}</p>
+          <h1>{draft?.name}</h1>
+          <p>{draft?.description}</p>
           <Author>
             <Image
-              src={formattedDraft?.author.photoURL || '/default-user.png'}
+              src={draft?.author.photoURL || '/default-user.png'}
               width={40}
               height={40}
             />
             <div>
-              <h2>{formattedDraft.author.name}</h2>
-              <p>{formattedDraft.createdAt}</p>
+              <h2>{draft?.author.name}</h2>
+              <p>
+                {draft?.createdAt &&
+                  format(new Date(draft?.createdAt), 'MMM d yyyy')}
+              </p>
             </div>
           </Author>
 
-          <MarkdownRenderer doc={formattedDraft.content} />
+          <MarkdownRenderer doc={draft!.content} />
         </Article>
       </Container>
     </>
