@@ -132,9 +132,11 @@ export function EditorProvider({ children }: ProviderProps) {
 
       const draftData = docSnapshot.data() as Draft
 
+      if (!draftData) return
+
       const isAlreadyPostedQuery = query(
         postsCollection,
-        where('draftId', '==', draftData!.id)
+        where('draftId', '==', draftData.id)
       )
 
       const existingPost = (
@@ -157,7 +159,6 @@ export function EditorProvider({ children }: ProviderProps) {
   const memoized = useMemo(
     () => ({
       draft,
-
       loading,
       alreadyExistingPost,
       handleSave,
@@ -166,7 +167,6 @@ export function EditorProvider({ children }: ProviderProps) {
     }),
     [
       alreadyExistingPost,
-
       draft,
       handleDocChange,
       handlePostSubmit,
