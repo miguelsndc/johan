@@ -22,6 +22,7 @@ export default function CreateArticlePage() {
       <Layout isHeaderHidden={isHeaderHidden}>
         {loading || (
           <MarkdownEditorContainer
+            draftInfo={draft}
             doc={draft!.content}
             onSave={handleSave}
             onToggleHeaderVisibility={setIsHeaderHidden}

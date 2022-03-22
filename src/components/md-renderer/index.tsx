@@ -24,14 +24,12 @@ const schema = {
 
 type Props = {
   doc: string
-  fullHeight?: boolean
   editMode?: boolean
   disableDebounce?: boolean
 }
 
 export default function MarkdownRenderer({
   doc,
-  fullHeight,
   editMode,
   disableDebounce,
 }: Props) {
@@ -61,9 +59,7 @@ export default function MarkdownRenderer({
     <Container
       className='markdown-body'
       data-testid='renderer'
-      fullHeight={fullHeight}
       editMode={editMode}
-      fitted={editMode && !fullHeight}
     >
       {md}
     </Container>

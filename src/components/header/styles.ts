@@ -8,6 +8,7 @@ const Container = styled('header', {
   padding: '0.75rem',
   width: '100%',
   minHeight: '5vh',
+  maxHeight: '7vh',
   background: '$purple700',
 
   '& > div': {

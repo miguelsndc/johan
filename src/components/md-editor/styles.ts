@@ -1,7 +1,7 @@
 import { styled } from '../../../stitches.config'
 
 export const Container = styled('div', {
-  flex: '0 0 50%',
+  flex: '0 0 47%',
   fontSize: '1rem',
   '& .cm-editor': {
     height: 'calc(100vh - 7vh)',

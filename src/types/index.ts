@@ -14,3 +14,12 @@ export type Post = {
   createdAt: string
   content: string
 }
+
+export type Draft = {
+  id: string
+  name: string
+  author: User
+  createdAt: string
+  description?: string
+  content: string
+}
