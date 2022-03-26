@@ -15,7 +15,7 @@ export default function PostList({ posts }: Props) {
           <h1>
             <Link href={`/article/${post.id}`}>{post.name}</Link>
           </h1>
-          <p>{post.content.substring(0, 100)}</p>
+          <p>{post.description}</p>
           <AuthorInformation>
             <Image
               src={post.author.photoURL || '/default-user.png'}
