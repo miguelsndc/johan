@@ -15,11 +15,13 @@ type LayoutProps = {
 }
 
 const DynamicArticleCreationDialog = dynamic(
-  () => import('../article-creation-dialog')
+  () => import('../article-creation-dialog'),
+  { ssr: false }
 )
 
 const DynamicWarnUnsignedDialog = dynamic(
-  () => import('../warn-unsigned-dialog')
+  () => import('../warn-unsigned-dialog'),
+  { ssr: false }
 )
 
 export default function Layout({
