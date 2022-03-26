@@ -2,6 +2,7 @@ import { GetStaticPropsContext, GetStaticProps, GetStaticPaths } from 'next'
 import { doc, getDoc } from 'firebase/firestore'
 import Head from 'next/head'
 import Image from 'next/image'
+import { format } from 'date-fns'
 import { firestore } from '../../config/firebase'
 import type { Post } from '../../types'
 import { styled } from '../../../stitches.config'
@@ -24,6 +25,11 @@ const Article = styled('article', {
     fontFamily: '$mono',
     lineHeight: 1,
     paddingTop: '8rem',
+  },
+
+  '& > p': {
+    marginTop: '0.75rem',
+    color: '$gray400',
   },
 })
 
@@ -48,7 +54,7 @@ const Author = styled('div', {
   display: 'flex',
   alignItems: 'center',
   gap: '0.75rem',
-  margin: '2.5rem 0',
+  margin: '1rem 0 2rem 0',
   img: {
     borderRadius: '50%',
   },
@@ -72,6 +78,7 @@ export default function ArticlePage({ post }: Props) {
       <Container>
         <Article>
           <h1>{post.name}</h1>
+          <p>{post.description}</p>
           <Author>
             <Image
               src={post?.author.photoURL || '/default-user.png'}
@@ -80,7 +87,7 @@ export default function ArticlePage({ post }: Props) {
             />
             <div>
               <h2>{post.author.name}</h2>
-              <p>{post.author.createdAt}</p>
+              <p>{format(new Date(post.createdAt), 'MMM d yyyy')}</p>
             </div>
           </Author>
 
