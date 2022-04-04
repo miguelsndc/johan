@@ -1,7 +1,9 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import { Layout, MarkdownEditorContainer } from '../../../../components'
 import { useEditor } from '../../../../contexts/editor'
+import { useAuth } from '../../../../contexts/auth'
 
 export default function CreateArticlePage() {
   const {
@@ -12,7 +14,13 @@ export default function CreateArticlePage() {
     handleSave,
     loading,
   } = useEditor()
+  const { user } = useAuth()
+  const router = useRouter()
   const [isHeaderHidden, setIsHeaderHidden] = useState(true)
+
+  useEffect(() => {
+    if (draft?.author?.uid && draft.author.uid !== user?.uid) router.push(`/`)
+  }, [draft?.author?.uid, user?.uid, router])
 
   return (
     <>

@@ -3,8 +3,10 @@ import Head from 'next/head'
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import { IoMdArrowBack } from 'react-icons/io'
+import { useEffect } from 'react'
 import { styled, theme } from '../../../../../stitches.config'
 import { useEditor } from '../../../../contexts/editor'
+import { useAuth } from '../../../../contexts/auth'
 import { Spinner, MarkdownRenderer } from '../../../../components'
 
 const Article = styled('article', {
@@ -17,11 +19,13 @@ const Article = styled('article', {
     fontWeight: '$semi',
     fontFamily: '$mono',
     lineHeight: 1,
-    paddingTop: '8rem',
+    paddingTop: '4rem',
+    paddingBottom: '0.25rem',
   },
 
   '& > p': {
     marginTop: '0.75rem',
+    marginBottom: '1.5rem',
     color: '$gray400',
   },
 })
@@ -82,9 +86,23 @@ const Author = styled('div', {
   },
 })
 
+const ThumbnailWrapper = styled('div', {
+  position: 'relative',
+  width: '100%',
+  aspectRatio: '16 / 9',
+  img: {
+    borderRadius: 8,
+  },
+})
+
 export default function PreviewArticlePage() {
   const router = useRouter()
   const { draft, loading } = useEditor()
+  const { user } = useAuth()
+
+  useEffect(() => {
+    if (draft?.author.uid !== user?.uid) router.push(`/`)
+  }, [draft?.author.uid, user?.uid, router])
 
   if (loading)
     return (
@@ -106,6 +124,12 @@ export default function PreviewArticlePage() {
         <Article>
           <h1>{draft?.name}</h1>
           <p>{draft?.description}</p>
+          {draft?.thumbnailURL && (
+            <ThumbnailWrapper>
+              <Image src={draft.thumbnailURL} layout='fill' priority />
+            </ThumbnailWrapper>
+          )}
+
           <Author>
             <Image
               src={draft?.author.photoURL || '/default-user.png'}
@@ -120,7 +144,6 @@ export default function PreviewArticlePage() {
               </p>
             </div>
           </Author>
-
           <MarkdownRenderer doc={draft!.content} />
         </Article>
       </Container>
