@@ -19,6 +19,10 @@ const ControlButton = styled('button', {
     outlineColor: '$purple400',
   },
 
+  'input[type="file"]': {
+    display: 'none',
+  },
+
   variants: {
     color: {
       gray: {
@@ -60,6 +64,7 @@ const Container = styled('div', {
   position: 'absolute',
   top: 20,
   right: 40,
+  zIndex: 9,
 
   '&, & > div': {
     display: 'flex',

@@ -30,6 +30,7 @@ const Header = styled('header', {
 const Description = styled('p', {
   color: '$gray400',
   marginTop: '0.5rem',
+  marginBottom: '1rem',
 })
 
 const Author = styled('div', {
@@ -72,4 +73,21 @@ const RendererWrapper = styled('div', {
   },
 })
 
-export { Wrapper, Title, Header, Author, RendererWrapper, Description }
+const ThumbnailWrapper = styled('div', {
+  position: 'relative',
+  width: '100%',
+  aspectRatio: '16 / 9',
+  img: {
+    borderRadius: 8,
+  },
+})
+
+export {
+  Wrapper,
+  Title,
+  Header,
+  Author,
+  RendererWrapper,
+  Description,
+  ThumbnailWrapper,
+}

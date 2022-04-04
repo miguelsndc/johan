@@ -29,6 +29,7 @@ const Article = styled('article', {
 
   '& > p': {
     marginTop: '0.75rem',
+    marginBottom: '1.25rem',
     color: '$gray400',
   },
 })
@@ -68,6 +69,16 @@ const Author = styled('div', {
   },
 })
 
+const ThumbnailWrapper = styled('div', {
+  position: 'relative',
+  width: '100%',
+  aspectRatio: '16 / 9',
+
+  img: {
+    borderRadius: 8,
+  },
+})
+
 export default function ArticlePage({ post }: Props) {
   return (
     <Layout>
@@ -77,8 +88,13 @@ export default function ArticlePage({ post }: Props) {
 
       <Container>
         <Article>
-          <h1>{post.name}</h1>
-          <p>{post.description}</p>
+          <h1>{post?.name}</h1>
+          <p>{post?.description}</p>
+          {post?.thumbnailURL && (
+            <ThumbnailWrapper>
+              <Image src={post.thumbnailURL} layout='fill' priority />
+            </ThumbnailWrapper>
+          )}
           <Author>
             <Image
               src={post?.author.photoURL || '/default-user.png'}
@@ -87,7 +103,7 @@ export default function ArticlePage({ post }: Props) {
             />
             <div>
               <h2>{post.author.name}</h2>
-              <p>{format(new Date(post.createdAt), 'MMM d yyyy')}</p>
+              <p>{post.createdAt}</p>
             </div>
           </Author>
 
@@ -114,8 +130,13 @@ export const getStaticProps: GetStaticProps = async (
 
   const data = docSnapshot.data() as Post
 
+  const formatted = {
+    ...data,
+    createdAt: format(new Date(data.createdAt), 'MMM d yyyy'),
+  }
+
   return {
-    props: { post: data },
+    props: { post: formatted },
     revalidate: REVALIDATE_INTERVAL_IN_SECONDS,
   }
 }

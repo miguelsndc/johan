@@ -1,9 +1,13 @@
 import { format } from 'date-fns'
 import Image from 'next/image'
+import { useState, ChangeEvent } from 'react'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { updateDoc, doc as docRef } from 'firebase/firestore'
 import MdRenderer from '../md-renderer'
 import MdEditor from '../md-editor'
 import ArticleControls from '../article-controls'
 import type { Post, Draft } from '../../types'
+import { bucket, firestore } from '../../config/firebase'
 import {
   Title,
   Wrapper,
@@ -11,6 +15,7 @@ import {
   Author,
   RendererWrapper,
   Description,
+  ThumbnailWrapper,
 } from './styles'
 
 type Props = {
@@ -36,6 +41,34 @@ export default function MarkdownEditorContainer({
   alreadyExistingPost,
   draftInfo,
 }: Props) {
+  const [thumbnail, setThumbnail] = useState('')
+
+  const handleChooseThumbnail = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length) return
+
+    const file = e.target.files[0]
+
+    const thumbnailStorageRef = ref(bucket, `thumbnail-${draftInfo?.id}`)
+
+    const snapshot = await uploadBytes(thumbnailStorageRef, file)
+
+    const url = await getDownloadURL(snapshot.ref)
+
+    const draftRef = docRef(
+      firestore,
+      'users',
+      draftInfo!.author.uid,
+      'drafts',
+      draftInfo!.id
+    )
+
+    await updateDoc(draftRef, {
+      thumbnailURL: url,
+    })
+
+    setThumbnail(url)
+  }
+
   return (
     <Wrapper>
       <ArticleControls
@@ -45,6 +78,8 @@ export default function MarkdownEditorContainer({
         onToggleHeaderVisibility={onToggleHeaderVisibility}
         isHeaderHidden={isHeaderHidden}
         alreadyExistingPost={alreadyExistingPost}
+        handleChooseThumbnail={handleChooseThumbnail}
+        thumbnail={draftInfo?.thumbnailURL || thumbnail}
       />
       <MdEditor
         initialDoc={doc}
@@ -57,6 +92,17 @@ export default function MarkdownEditorContainer({
             {draftInfo?.name}
           </Title>
           <Description>{draftInfo?.description}</Description>
+
+          {(draftInfo?.thumbnailURL || thumbnail) && (
+            <ThumbnailWrapper>
+              <Image
+                src={draftInfo?.thumbnailURL || thumbnail}
+                layout='fill'
+                priority
+              />
+            </ThumbnailWrapper>
+          )}
+
           <Author>
             <Image
               src={draftInfo?.author.photoURL || '/default-user.png'}

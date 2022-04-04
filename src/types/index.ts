@@ -12,6 +12,7 @@ export type Post = {
   description: string | null
   author: User
   createdAt: string
+  thumbnailURL?: string
   content: string
 }
 
@@ -22,4 +23,5 @@ export type Draft = {
   createdAt: string
   description?: string
   content: string
+  thumbnailURL?: string
 }

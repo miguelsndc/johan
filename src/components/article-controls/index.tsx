@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useState, ChangeEvent } from 'react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { BsThreeDotsVertical, BsXLg } from 'react-icons/bs'
+import {
+  BsThreeDotsVertical,
+  BsXLg,
+  BsFileEarmarkArrowUp,
+} from 'react-icons/bs'
 import Spinner from '../spinner'
 import Switch from '../switch'
 import { Container, ControlButton } from './styles'
@@ -10,11 +14,13 @@ import type { Post } from '../../types'
 
 type Props = {
   onSave: (doc: string) => Promise<void>
-  onPost: (doc: string) => Promise<Post>
+  onPost: (doc: string, thumbnail?: string) => Promise<Post>
   onToggleHeaderVisibility: (current: boolean) => void
+  handleChooseThumbnail?: (e: ChangeEvent<HTMLInputElement>) => void
   isHeaderHidden: boolean
   doc: string
   alreadyExistingPost?: boolean
+  thumbnail?: string
 }
 
 export default function ArticleControls({
@@ -24,6 +30,8 @@ export default function ArticleControls({
   onToggleHeaderVisibility,
   isHeaderHidden,
   alreadyExistingPost,
+  handleChooseThumbnail,
+  thumbnail,
 }: Props) {
   const [saving, setSaving] = useState({
     loading: false,
@@ -58,7 +66,7 @@ export default function ArticleControls({
       duration: 5000,
     })
 
-    onPost(doc)
+    onPost(doc, thumbnail)
       .then((post) => {
         if (alreadyExistingPost) {
           toast.success(
@@ -122,6 +130,20 @@ export default function ArticleControls({
             size={alreadyExistingPost ? 'fitChildren' : 'fixed'}
           >
             {alreadyExistingPost ? 'update' : 'post'}
+          </ControlButton>
+
+          <ControlButton
+            as='label'
+            color='gray'
+            size='rounded'
+            aria-label='toggle controls visibility'
+          >
+            <input
+              type='file'
+              accept='image/*'
+              onChange={handleChooseThumbnail}
+            />
+            <BsFileEarmarkArrowUp />
           </ControlButton>
         </div>
       )}

@@ -6,6 +6,8 @@ import {
   useEffect,
   useMemo,
   useContext,
+  Dispatch,
+  SetStateAction,
 } from 'react'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
@@ -20,21 +22,12 @@ import {
   where,
 } from 'firebase/firestore'
 import { useAuth } from './auth'
-import type { Post, User } from '../types'
+import type { Post, Draft } from '../types'
 import { toKebabCase } from '../helpers/to-kebab-case'
 import { firestore } from '../config/firebase'
 
 type ProviderProps = {
   children: ReactNode
-}
-
-type Draft = {
-  id: string
-  name: string
-  author: User
-  createdAt: string
-  description?: string
-  content: string
 }
 
 type ContextValue = {
@@ -44,6 +37,7 @@ type ContextValue = {
   handleSave: (docSnapshot: string) => Promise<void>
   handlePostSubmit: (docSnapshot: string) => Promise<Post>
   handleDocChange: (newDoc: string) => Promise<void>
+  setDraft: Dispatch<SetStateAction<Draft | null>>
 }
 
 export const editorContext = createContext({} as ContextValue)
@@ -76,7 +70,7 @@ export function EditorProvider({ children }: ProviderProps) {
   )
 
   const handlePostSubmit = useCallback(
-    async (docSnapshot: string) => {
+    async (docSnapshot: string, thumbnail?: string) => {
       const postsCollection = collection(firestore, 'posts')
 
       if (alreadyExistingPost) {
@@ -99,6 +93,7 @@ export function EditorProvider({ children }: ProviderProps) {
         id: postId,
         name: draft!.name,
         description: draft?.description ?? null,
+        thumbnailURL: thumbnail || '',
         author: user!,
         draftId: draft!.id,
         createdAt: new Date().toISOString(),
@@ -153,7 +148,7 @@ export function EditorProvider({ children }: ProviderProps) {
       }
     }
 
-    if (router.isReady && user) setup()
+    if (router.isReady && user && id) setup()
   }, [id, user, router.isReady])
 
   const memoized = useMemo(
@@ -164,6 +159,7 @@ export function EditorProvider({ children }: ProviderProps) {
       handleSave,
       handlePostSubmit,
       handleDocChange,
+      setDraft,
     }),
     [
       alreadyExistingPost,
@@ -172,6 +168,7 @@ export function EditorProvider({ children }: ProviderProps) {
       handlePostSubmit,
       handleSave,
       loading,
+      setDraft,
     ]
   )
 
