@@ -5,26 +5,25 @@ export const Container = styled('section', {
   maxWidth: 1100,
   marginTop: '1rem',
   marginInline: 'auto',
-  justifyItems: 'center',
   width: '100%',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+  gridTemplateColumns: '1fr 1fr',
   rowGap: 30,
+  a: {
+    all: 'unset',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
 })
 
 export const PostContainer = styled('div', {
-  display: 'inline-block',
-  maxWidth: 350,
   h1: {
+    fontSize: '3rem',
     fontWeight: 500,
     lineHeight: 1,
     letterSpacing: '0.035em',
-    a: {
-      color: '$gray50',
-      textDecoration: 'none',
-      '&:hover': {
-        textDecoration: 'underline',
-      },
-    },
+    color: '$gray50',
+    fontFamily: '$mono',
   },
   p: {
     color: '$gray400',
