@@ -80,7 +80,7 @@ describe('components/layout', () => {
       const createPostDialog = await screen.findByRole('dialog')
 
       expect(createPostDialog).toHaveAccessibleDescription(
-        'Name your draft to start working'
+        'Name your draft to start working. Try adding a tiny description so the final result looks prettier'
       )
       expect(createPostDialog).toHaveAccessibleName(
         'So you want to create a new post ?'

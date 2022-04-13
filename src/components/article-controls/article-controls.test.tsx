@@ -36,7 +36,7 @@ describe('components/article-controls', () => {
 
     user.click(postButton)
 
-    expect(onPost).toHaveBeenCalledWith(doc)
+    expect(onPost).toHaveBeenCalledWith(doc, undefined)
   })
   it('should show controls by default', () => {
     screen.getByTestId('controls-container')
