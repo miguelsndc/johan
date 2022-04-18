@@ -1,6 +1,14 @@
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import Link from 'next/link'
-import { collection, query, where, getDocs } from 'firebase/firestore'
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { VscCircleLargeFilled } from 'react-icons/vsc'
 import Image from 'next/image'
@@ -11,11 +19,23 @@ import { Layout } from '../../components'
 import type { User, Post, Draft } from '../../types'
 import { styled } from '../../../stitches.config'
 
-type LivePost = { live?: boolean } & Post
+type LiveDraft = { live?: boolean; postId: string | null } & Draft
 
 type Props = {
-  posts: LivePost[]
+  user: User
+  serverDrafts: LiveDraft[]
 }
+
+const Profile = styled('div', {
+  textAlign: 'center',
+  img: {
+    borderRadius: '50%',
+  },
+  h1: {
+    marginTop: '1rem',
+    fontWeight: '$semi',
+  },
+})
 
 const PostCard = styled('div', {
   display: 'flex',
@@ -39,12 +59,24 @@ const Container = styled('div', {
   maxWidth: 1100,
   width: '100%',
   marginInline: 'auto',
+  marginTop: '2rem',
+  h2: {
+    fontWeight: '$semi',
+  },
 })
 
 const PostSection = styled('section', {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  justifyItems: 'center',
+  justifyContent: 'center',
   gap: '1rem',
-  flexWrap: 'wrap',
+  '@media (max-width: 1100px)': {
+    gridTemplateColumns: '1fr 1fr',
+  },
+  '@media (max-width: 696px)': {
+    gridTemplateColumns: '1fr',
+  },
 })
 
 const Footer = styled('div', {
@@ -60,12 +92,12 @@ const Footer = styled('div', {
     padding: '0.35rem',
     borderRadius: 4,
     textTransform: 'uppercase',
-    fontWeight: '$semi',
+    fontWeight: '$medium',
     transition: 'background .2s',
-    background: '$gray300',
+    background: '$gray200',
     color: '$black',
     '&:hover': {
-      background: '$gray400',
+      background: '$gray300',
     },
   },
   span: {
@@ -79,58 +111,128 @@ const Footer = styled('div', {
     padding: '0.35rem',
     borderRadius: 4,
     textTransform: 'uppercase',
-    fontWeight: '$semi',
+    fontWeight: '$medium',
     letterSpacing: 1,
     fontSize: '0.75rem',
-    opacity: '0.75',
+  },
+  button: {
+    background: '$red500',
+    color: '$gray50',
+    border: '2px solid #ef4444',
+    textTransform: 'capitalize',
+    fontWeight: '$medium',
+    padding: '0.25rem 0.35rem',
+    borderRadius: 4,
+    cursor: 'pointer',
+  },
+  '& > div': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
   },
 })
 
-export default function UserPage({ posts }: Props) {
+export default function UserPage({ user, serverDrafts }: Props) {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user: authenticatedUser } = useAuth()
   const { name } = router.query
+
+  const [drafts, setDrafts] = useState(serverDrafts)
+
+  const handleDeletePost = async (postId: string | null, draftId: string) => {
+    const draftRef = doc(
+      firestore,
+      'users',
+      authenticatedUser!.uid,
+      'drafts',
+      draftId
+    )
+
+    await deleteDoc(draftRef)
+
+    if (postId) {
+      const postRef = doc(firestore, 'posts', postId)
+
+      await deleteDoc(postRef)
+    }
+
+    setDrafts((prevState) => prevState.filter((draft) => draft.id !== draftId))
+  }
 
   return (
     <>
       <Head>
-        <title>Johan | {user?.name || ''}</title>
+        <title>Johan | {user.name}</title>
       </Head>
 
       <Layout>
         <Container>
-          <Image
-            src={user?.photoURL || '/default-user.png'}
-            width={100}
-            height={100}
-            priority
-          />
-          <div>{name}</div>
-          <h1>Current Posts</h1>
+          <Profile>
+            <Image
+              src={user.photoURL || '/default-user.png'}
+              width={100}
+              height={100}
+              priority
+            />
+            <h1>{name}</h1>
+          </Profile>
+          <h2>
+            {authenticatedUser?.uid === user.uid ? 'Your' : `${user.name}'s`}{' '}
+            Posts
+          </h2>
           <PostSection>
-            {posts.map((post) => (
-              <PostCard key={post.id}>
-                {post.thumbnailURL && (
-                  <Image
-                    src={post.thumbnailURL}
-                    layout='responsive'
-                    width={320}
-                    height={180}
-                  />
-                )}
-                <h1>{post.name}</h1>
-                <Footer>
-                  <Link href={`/article/edit/${post.id}`}>
-                    {post.live ? 'UPDATE' : 'CONTINUE WRITING'}
-                  </Link>
-                  {post.live && (
-                    <span>
-                      <VscCircleLargeFilled /> live
-                    </span>
+            {drafts.map((draft) =>
+              draft.author.uid === authenticatedUser?.uid ? (
+                <PostCard key={draft.id}>
+                  {draft.thumbnailURL && (
+                    <div>
+                      <Image
+                        src={draft.thumbnailURL}
+                        layout='responsive'
+                        width={320}
+                        height={180}
+                      />
+                    </div>
                   )}
-                </Footer>
-              </PostCard>
-            ))}
+                  <h1>{draft.name}</h1>
+
+                  <Footer>
+                    <div>
+                      <Link href={`/article/edit/${draft.id}`}>
+                        {draft.live ? 'UPDATE' : 'CONTINUE WRITING'}
+                      </Link>
+                      <button
+                        type='button'
+                        onClick={() => handleDeletePost(draft.postId, draft.id)}
+                      >
+                        delete
+                      </button>
+                    </div>
+                    {draft.live && (
+                      <span>
+                        <VscCircleLargeFilled /> live
+                      </span>
+                    )}
+                  </Footer>
+                </PostCard>
+              ) : (
+                draft.postId && (
+                  <PostCard key={draft.id}>
+                    {draft.thumbnailURL && (
+                      <div>
+                        <Image
+                          src={draft.thumbnailURL}
+                          layout='responsive'
+                          width={320}
+                          height={180}
+                        />
+                      </div>
+                    )}
+                    <h1>{draft.name}</h1>
+                  </PostCard>
+                )
+              )
+            )}
           </PostSection>
         </Container>
       </Layout>
@@ -163,11 +265,11 @@ export const getServerSideProps: GetServerSideProps = async (
   )
 
   const userPosts = (await getDocs(userPostsQuery)).docs.map(
-    (doc) => ({ ...doc?.data(), content: '' } as Post)
+    (post) => ({ ...post?.data(), content: '' } as Post)
   )
 
   const userDrafts = (await getDocs(userDraftsCollection)).docs.map(
-    (doc) => ({ ...doc?.data(), content: '' } as Draft)
+    (draft) => ({ ...draft?.data(), content: '' } as Draft)
   )
 
   const liveDrafts = userDrafts.map((draft) => {
@@ -176,12 +278,14 @@ export const getServerSideProps: GetServerSideProps = async (
     return {
       ...draft,
       live: Boolean(live),
+      postId: live?.id || null,
     }
   })
 
   return {
     props: {
-      posts: liveDrafts,
+      user,
+      serverDrafts: liveDrafts,
     },
   }
 }
