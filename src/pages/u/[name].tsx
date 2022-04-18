@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Link from 'next/link'
@@ -35,6 +36,10 @@ const Profile = styled('div', {
     marginTop: '1rem',
     fontWeight: '$semi',
   },
+})
+
+const PostWrapper = styled('div', {
+  textDecoration: 'none',
 })
 
 const PostCard = styled('div', {
@@ -217,19 +222,25 @@ export default function UserPage({ user, serverDrafts }: Props) {
                 </PostCard>
               ) : (
                 draft.postId && (
-                  <PostCard key={draft.id}>
-                    {draft.thumbnailURL && (
-                      <div>
-                        <Image
-                          src={draft.thumbnailURL}
-                          layout='responsive'
-                          width={320}
-                          height={180}
-                        />
-                      </div>
-                    )}
-                    <h1>{draft.name}</h1>
-                  </PostCard>
+                  <PostWrapper>
+                    <Link href={`article/${draft.postId}`} passHref>
+                      <a>
+                        <PostCard key={draft.id}>
+                          {draft.thumbnailURL && (
+                            <div>
+                              <Image
+                                src={draft.thumbnailURL}
+                                layout='responsive'
+                                width={320}
+                                height={180}
+                              />
+                            </div>
+                          )}
+                          <h1>{draft.name}</h1>
+                        </PostCard>
+                      </a>
+                    </Link>
+                  </PostWrapper>
                 )
               )
             )}
