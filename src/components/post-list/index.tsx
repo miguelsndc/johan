@@ -1,7 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import Image from 'next/image'
 import Link from 'next/link'
-import { PostContainer, AuthorInformation, Container } from './styles'
+import {
+  PostContainer,
+  AuthorInformation,
+  Container,
+  ThumbnailWrapper,
+} from './styles'
 import { Post } from '../../types/index'
 
 type Props = {
@@ -15,6 +20,16 @@ export default function PostList({ posts }: Props) {
         <Link href={`/article/${post.id}`} key={post.id}>
           <a>
             <PostContainer>
+              {post.thumbnailURL && (
+                <ThumbnailWrapper>
+                  <Image
+                    src={post.thumbnailURL}
+                    layout='responsive'
+                    width={320}
+                    height={180}
+                  />
+                </ThumbnailWrapper>
+              )}
               <h1>{post.name}</h1>
               <p>{post.description}</p>
               <AuthorInformation>

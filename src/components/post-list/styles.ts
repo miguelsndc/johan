@@ -2,23 +2,40 @@ import { styled } from '../../../stitches.config'
 
 export const Container = styled('section', {
   display: 'grid',
+  gridTemplateColumns: '1fr 1fr 1fr',
+  gap: '1rem',
+  justifyItems: 'center',
   maxWidth: 1100,
   marginTop: '1rem',
+  padding: '0 1rem',
   marginInline: 'auto',
   width: '100%',
-  gridTemplateColumns: '1fr 1fr',
-  rowGap: 30,
   a: {
     all: 'unset',
     '&:hover': {
       cursor: 'pointer',
     },
   },
+  '@media (max-width: 1100px)': {
+    gridTemplateColumns: '1fr 1fr',
+  },
+  '@media (max-width: 696px)': {
+    gridTemplateColumns: '1fr',
+  },
+})
+
+export const ThumbnailWrapper = styled('div', {
+  marginBottom: '0.5rem',
+  img: {
+    borderRadius: 4,
+  },
 })
 
 export const PostContainer = styled('div', {
+  maxWidth: 550,
+
   h1: {
-    fontSize: '3rem',
+    fontSize: '2rem',
     fontWeight: 500,
     lineHeight: 1,
     letterSpacing: '0.035em',
