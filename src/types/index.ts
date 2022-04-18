@@ -14,6 +14,7 @@ export type Post = {
   createdAt: string
   thumbnailURL?: string
   content: string
+  draftId: string
 }
 
 export type Draft = {
