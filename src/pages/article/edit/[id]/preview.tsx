@@ -101,8 +101,8 @@ export default function PreviewArticlePage() {
   const { user } = useAuth()
 
   useEffect(() => {
-    if (draft?.author.uid !== user?.uid) router.push(`/`)
-  }, [draft?.author.uid, user?.uid, router])
+    if (draft?.author?.uid !== user?.uid) router.push(`/`)
+  }, [draft?.author?.uid, user?.uid, router])
 
   if (loading)
     return (
