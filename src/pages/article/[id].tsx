@@ -20,11 +20,14 @@ const Article = styled('article', {
   backgroundColor: '#0d1117',
 
   '& > h1': {
-    fontSize: '4rem',
+    fontSize: '2.75rem',
     fontWeight: '$semi',
     fontFamily: '$mono',
     lineHeight: 1,
     paddingTop: '8rem',
+    '@md': {
+      fontSize: '4rem',
+    },
   },
 
   '& > p': {

@@ -67,6 +67,8 @@ const Container = styled('div', {
   marginTop: '2rem',
   h2: {
     fontWeight: '$semi',
+    marginLeft: '1.5rem',
+    marginTop: '1.5rem',
   },
 })
 

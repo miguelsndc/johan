@@ -5,8 +5,8 @@ export const Container = styled('section', {
   columnGap: 24,
   maxWidth: 1200,
   marginTop: '1rem',
-  padding: '0 1rem',
   marginInline: 'auto',
+  padding: '0.75rem',
   width: '100%',
   a: {
     all: 'unset',
@@ -31,7 +31,10 @@ export const ThumbnailWrapper = styled('div', {
 
 export const PostContainer = styled('div', {
   breakInside: 'avoid',
-  marginBottom: '4rem',
+  marginBottom: '3rem',
+  border: '1px solid #27272a',
+  padding: '0.5rem',
+  borderRadius: 4,
   h1: {
     fontSize: '2rem',
     fontWeight: 500,

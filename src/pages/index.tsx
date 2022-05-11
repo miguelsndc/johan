@@ -23,6 +23,11 @@ const Container = styled('div', {
     fontSize: 'clamp(2rem, 5vw, 3rem)',
     color: '$gray300',
   },
+  '& > hr': {
+    opacity: '0.25',
+    marginTop: '2rem',
+    marginBottom: '3rem',
+  },
 })
 
 function Home({ posts }: Props) {
@@ -31,6 +36,7 @@ function Home({ posts }: Props) {
       <Container>
         <h1>Welcome to Johan !</h1>
         <h2>See What&apos;s new:</h2>
+        <hr />
         <PostList posts={posts} />
       </Container>
     </Layout>
